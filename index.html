@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English Coach</title>
+<meta name="theme-color" content="#3b5bdb">
+<meta name="description" content="Tu academia personal de inglés: lecciones, listening, speaking y repaso.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="English Coach">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7fb; --card:#ffffff; --ink:#141a2e; --muted:#5d6782; --line:#e3e7f0;
+  --brand:#3b5bdb; --brand-2:#e8edff; --ok:#12a36b; --ok-2:#e3f6ee; --bad:#d6334a; --bad-2:#fde8eb;
+  --warn:#e8890c; --warn-2:#fff3e0; --sky:#0ea5c6;
+  --r:14px; --shadow:0 1px 2px rgba(20,26,46,.06),0 4px 16px rgba(20,26,46,.05);
+  --head:"Fraunces",Georgia,serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+h1,h2,h3{margin:0;line-height:1.2}
+h1{font:700 30px/1.15 var(--head);letter-spacing:-.01em}
+h2{font:700 22px/1.2 var(--head)}
+h3{font-size:16px;font-weight:600}
+p{margin:0}
+a{color:var(--brand)}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.side{background:#10162b;color:#c9d1e8;padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.logo{display:flex;gap:10px;align-items:center;padding:4px 10px 18px;color:#fff}
+.logo .mk{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#5c7cfa,#22b8cf);display:grid;place-items:center;font-weight:700;font-size:15px;color:#fff}
+.logo b{display:block;font:700 17px var(--head);letter-spacing:.01em}
+.logo small{display:block;font-size:11px;color:#8d97b5}
+.nav a{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:10px;color:#c9d1e8;text-decoration:none;font-size:14.5px;font-weight:500}
+.nav a:hover{background:#1b2340;color:#fff}
+.nav a.on{background:#25305a;color:#fff}
+.nav svg{width:18px;height:18px;flex:none;opacity:.9}
+.side .grow{flex:1}
+.savebox{font-size:12px;color:#8d97b5;padding:10px 12px;border-top:1px solid #222b4a}
+.savebox .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#8d97b5;vertical-align:middle}
+.savebox .dot.ok{background:#3ddc97}.savebox .dot.warn{background:#ffb02e}.savebox .dot.bad{background:#ff5d73}
+main{padding:28px clamp(16px,4vw,44px) 90px;max-width:1180px;width:100%}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.top .sub{color:var(--muted);margin-top:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 16px;font-weight:600;font-size:14.5px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:#c5cce0}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.pri:hover{background:#2f4bc0}
+.btn.big{padding:13px 22px;font-size:16px;border-radius:12px}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:focus-visible,.nav a:focus-visible,.opt:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #91a7ff;outline-offset:2px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.muted{color:var(--muted)}.small{font-size:13.5px}.tiny{font-size:12px}
+.k{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat .n{font:700 30px/1.1 var(--head);margin-top:6px}
+.stat .d{font-size:13px;color:var(--muted);margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--brand-2);color:var(--brand)}
+.pill.ok{background:var(--ok-2);color:var(--ok)}.pill.bad{background:var(--bad-2);color:var(--bad)}.pill.warn{background:var(--warn-2);color:#b26200}.pill.gray{background:#eef0f5;color:var(--muted)}
+.bar{height:8px;background:#edf0f7;border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#5c7cfa,#22b8cf);border-radius:99px}
+.hero{background:linear-gradient(120deg,#1b2a6b,#3b5bdb 60%,#22b8cf);color:#fff;border:0}
+.hero .muted{color:#d5ddff}
+.hero .btn.big{background:#fff;color:#1b2a6b;border-color:#fff}
+.lvl{font:700 46px/1 var(--head)}
+.skills{display:grid;gap:10px}
+.skill{display:grid;grid-template-columns:130px 1fr 54px;gap:12px;align-items:center;font-size:14px}
+.q{font-size:18px;font-weight:500;margin:6px 0 16px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 16px;cursor:pointer;font-size:15.5px}
+.opt:hover{border-color:#a5b4fc;background:#fafbff}
+.opt.sel{border-color:var(--brand);background:var(--brand-2)}
+.opt.right{border-color:var(--ok);background:var(--ok-2)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-2)}
+.fb{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:14.5px}
+.fb.ok{background:var(--ok-2)}.fb.bad{background:var(--bad-2)}.fb.info{background:var(--brand-2)}
+textarea,input[type=text],input[type=number],select{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;font-size:15.5px}
+textarea{min-height:160px;resize:vertical}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.steps span{font-size:12.5px;padding:4px 10px;border-radius:99px;background:#eef0f5;color:var(--muted);font-weight:600}
+.steps span.on{background:var(--brand);color:#fff}.steps span.done{background:var(--ok-2);color:var(--ok)}
+.reading{background:#fbfbfd;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px;font-size:15.5px}
+.corr{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px}
+.corr .o{text-decoration:line-through;color:var(--bad)}
+.corr .c{color:var(--ok);font-weight:600}
+.tag{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:#eef0f5;color:var(--muted)}
+.tag.g{background:var(--bad-2);color:var(--bad)}.tag.n{background:var(--warn-2);color:#b26200}.tag.v{background:var(--brand-2);color:var(--brand)}
+.path{display:grid;gap:14px}
+.mod{border:1px solid var(--line);border-radius:var(--r);background:#fff;overflow:hidden}
+.mod>summary{list-style:none;cursor:pointer;padding:16px 18px;display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center}
+.mod>summary::-webkit-details-marker{display:none}
+.mod .num{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font:700 18px var(--head);background:#eef0f5;color:var(--muted)}
+.mod.cur .num{background:var(--brand);color:#fff}.mod.done .num{background:var(--ok);color:#fff}
+.unit{padding:4px 18px 16px 76px}
+.unit h4{margin:10px 0 8px;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.les{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;font-size:14.5px}
+.les:hover{background:#f6f7fb}
+.les .ic{width:20px;height:20px;border-radius:50%;border:2px solid #cfd5e3;display:grid;place-items:center;font-size:11px;color:#fff}
+.les.done .ic{background:var(--ok);border-color:var(--ok)}
+.les.avail .ic{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-2)}
+.les.review .ic{background:var(--warn);border-color:var(--warn)}
+.les.locked{color:#9aa3b8}
+.chat{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;padding:4px 2px 10px}
+.msg{max-width:78%;padding:10px 14px;border-radius:14px;font-size:15px}
+.msg.ai{background:#f0f2f8;align-self:flex-start;border-bottom-left-radius:4px}
+.msg.me{background:var(--brand);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.flash{perspective:1000px;margin:10px auto;max-width:520px}
+.face{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);min-height:220px;padding:28px;display:grid;place-items:center;text-align:center}
+.face .term{font:700 32px/1.2 var(--head)}
+.mic.on{background:var(--bad);border-color:var(--bad);color:#fff}
+.chart{width:100%;height:auto;display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.spin{width:18px;height:18px;border:2.5px solid #c7d0ea;border-top-color:var(--brand);border-radius:50%;animation:sp .8s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#10162b;color:#fff;padding:10px 18px;border-radius:12px;font-size:14px;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,.2);max-width:90vw}
+.mnav{display:none}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  .mnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#10162b;z-index:50;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .mnav a{color:#c9d1e8;text-decoration:none;font-size:10.5px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 6px;border-radius:8px}
+  .mnav a.on{color:#fff;background:#25305a}
+  .mnav svg{width:20px;height:20px}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .g4.keep{grid-template-columns:repeat(2,1fr)}
+  main{padding:20px 14px 96px}
+  h1{font-size:25px}
+  .unit{padding:4px 12px 14px 16px}
+  .skill{grid-template-columns:100px 1fr 44px}
+  .msg{max-width:90%}
+  .msave{display:block!important}
+}
+.msave{display:none;font-size:12px;color:var(--muted);margin-top:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo"><div class="mk">EC</div><div><b>English Coach</b><small>My Personal English Academy</small></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="grow"></div>
+    <div class="savebox" id="savebox"><span class="dot"></span>Cargando…</div>
+  </aside>
+  <main id="main"><div class="empty"><span class="spin"></span> Cargando tu academia…</div></main>
+</div>
+<nav class="mnav" id="mnav"></nav>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+<script src="platform.js"></script>
+<script>
+(function(){
+"use strict";
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const today=()=>new Date().toISOString().slice(0,10);
+const nowISO=()=>new Date().toISOString();
+const uid=()=>Math.random().toString(36).slice(2,10);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const LEVELS=["A1","A2","B1","B2","C1","C2"];
+const SKILLS=[["grammar","Grammar"],["vocabulary","Vocabulary"],["reading","Reading"],["writing","Writing"],["listening","Listening"],["speaking","Speaking"]];
+const SKILL_LABEL=Object.fromEntries(SKILLS.concat([["reading_writing","Reading & Writing"],["assessment","Evaluación"],["professional","Inglés profesional"]]));
+const norm=s=>String(s||"").toLowerCase().replace(/[’‘`]/g,"'").replace(/[.,!?;:"()]/g,"").replace(/\s+/g," ").trim();
+const fmtMin=m=>{m=Math.round(m||0);return m<60?m+" min":Math.floor(m/60)+" h "+(m%60)+" min";};
+function weekStart(d){d=d?new Date(d):new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d.toISOString().slice(0,10);}
+function toast(t,ms){const el=document.createElement("div");el.className="toast";el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),ms||3200);}
+
+/* ============================================================
+   ESTADO Y PERSISTENCIA
+   ============================================================ */
+const LS_KEY="english-coach-state-v1";
+function blankState(){
+  return {v:1,createdAt:nowISO(),updatedAt:nowISO(),
+    prefs:{voice:"buttery",rate:1,goalMin:150,goalLessons:3},
+    diag:{status:"none",step:"intro"},
+    course:null,
+    current:null,          // {lessonId, content, step, answers:{}, app:{}, final:{}}
+    results:[],            // {date, type, id, skill, score, title}
+    errors:[],             // {id,key,skill,kind,prompt,wrong,correct,explanation,count,last,resolved}
+    vocab:[],              // SRS cards
+    time:{total:0,byDay:{}},
+    speaking:[],           // historial de Speaking Lab
+    activity:[]            // log breve
+  };
+}
+let S=blankState();
+let db=null, me=null, userCap=null, sample=null, tts=null, dict=null, dls=null;
+let persistMode="local"; // "account" | "local" | "none"
+let saveTimer=null, saving=false, saveAgain=false, lastSaved="";
+function loadLocal(){try{const t=localStorage.getItem(LS_KEY);return t?JSON.parse(t):null;}catch(e){return null;}}
+function saveLocal(json){try{localStorage.setItem(LS_KEY,json);return true;}catch(e){return false;}}
+let statusHTML='<span class="dot"></span>Cargando…';
+function setSaveStatus(kind,text){
+  const html='<span class="dot '+kind+'"></span>'+esc(text); statusHTML=html;
+  const b=$("#savebox"); if(b) b.innerHTML=html;
+  document.querySelectorAll(".msave").forEach(el=>el.innerHTML=html);
+}
+function save(){ S.updatedAt=nowISO(); clearTimeout(saveTimer); saveTimer=setTimeout(flush,700); }
+async function flush(){
+  const json=JSON.stringify(S);
+  if(json===lastSaved) return;
+  const okLocal=saveLocal(json);
+  if(persistMode!=="account"||!db||!me){
+    lastSaved=json;
+    setSaveStatus(okLocal?"ok":"bad", okLocal?"Progreso guardado en este computador":"No se pudo guardar");
+    return;
+  }
+  if(saving){saveAgain=true;return;}
+  saving=true; setSaveStatus("warn","Guardando…");
+  try{
+    await db.doc("data/users/"+me+"/state").set(JSON.parse(json));
+    lastSaved=json; setSaveStatus("ok","Progreso guardado en tu cuenta");
+  }catch(e){
+    if(e&&e.code==="unavailable"){ await new Promise(r=>setTimeout(r,800+Math.random()*800));
+      try{await db.doc("data/users/"+me+"/state").set(JSON.parse(json));lastSaved=json;setSaveStatus("ok","Progreso guardado en tu cuenta");}
+      catch(e2){setSaveStatus("bad","Error al guardar en la cuenta (copia local OK)");} }
+    else if(e&&e.code==="quota_exceeded"){setSaveStatus("bad","Base de datos llena: exporta tu progreso");}
+    else setSaveStatus("bad","Error al guardar en la cuenta (copia local OK)");
+  }
+  saving=false;
+  if(saveAgain){saveAgain=false;flush();}
+}
+function migrate(o){const b=blankState();if(!o||typeof o!=="object")return b;
+  for(const k in b) if(!(k in o)) o[k]=b[k];
+  o.prefs=Object.assign(b.prefs,o.prefs||{});o.time=Object.assign(b.time,o.time||{});return o;}
+function log(t){S.activity.unshift({d:nowISO(),t});S.activity=S.activity.slice(0,40);}
+
+/* tiempo de estudio: cuenta minutos con la pestaña visible y actividad reciente */
+let lastAct=Date.now(), pendingSec=0;
+["click","keydown","scroll","touchstart"].forEach(ev=>addEventListener(ev,()=>{lastAct=Date.now();},{passive:true}));
+setInterval(()=>{ if(document.visibilityState==="visible"&&Date.now()-lastAct<120000){pendingSec+=15;}
+  if(pendingSec>=120){const m=pendingSec/60;pendingSec=0;S.time.total=(S.time.total||0)+m;const d=today();S.time.byDay[d]=(S.time.byDay[d]||0)+m;save();}
+},15000);
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden"&&pendingSec>=30){const m=pendingSec/60;pendingSec=0;S.time.total+=m;const d=today();S.time.byDay[d]=(S.time.byDay[d]||0)+m;S.updatedAt=nowISO();flush();} });
+
+/* ============================================================
+   CLAUDE (capacidad sample)
+   ============================================================ */
+async function askJSON(prompt,tier){
+  if(!sample) throw {code:"no_sample",message:"Configura tu clave gratuita de Gemini en Ajustes para usar la IA."};
+  const opts={modelTier:tier||"default",cache:false};
+  try{
+    if(sample.json) return await sample.json(prompt,opts);
+    const r=await sample(prompt,opts); return parseJSON(r.text);
+  }catch(e){
+    if(e&&e.code==="not_granted") throw {code:"not_granted",message:"La clave de Gemini no es válida. Revísala en Ajustes."};
+    if(e&&e.code==="rate_limited") throw {code:"rate_limited",message:"Demasiadas solicitudes seguidas. Espera un minuto y vuelve a intentar."};
+    if(e&&e.text){try{return parseJSON(e.text);}catch(_){}}
+    throw {code:(e&&e.code)||"error",message:(e&&e.message)||"No se pudo obtener respuesta de la IA."};
+  }
+}
+function parseJSON(t){t=String(t||"");const a=t.indexOf("{"),b=t.lastIndexOf("}");if(a<0||b<0)throw new Error("sin JSON");return JSON.parse(t.slice(a,b+1));}
+async function askText(messages,onText){
+  if(!sample) throw {code:"no_sample",message:"No disponible"};
+  const r=await sample(messages,{modelTier:"default",cache:false,onText:onText?({text})=>onText(text):undefined});
+  return r.text;
+}
+const LEARNER="Learner profile: Chilean professional, native Spanish speaker, uses English with international colleagues and suppliers (meetings, emails, negotiations, presentations). Wants fluency, US English listening, complex ideas, professional + everyday vocabulary, pronunciation/intelligibility, grammar in real conversation, confidence in meetings, natural social conversation, travel and culture.";
+
+/* ============================================================
+   AUDIO: TTS (listening) y DICTADO (speaking)
+   ============================================================ */
+async function speak(text,opts){
+  if(!tts) throw {code:"no_tts"};
+  return tts.speak(text,Object.assign({language:"en",voice:S.prefs.voice||"",rate:S.prefs.rate||1},opts||{}));
+}
+function stopSpeak(){try{tts&&tts.stop();}catch(e){}}
+let dictState={on:false,target:null,base:"",started:0,partial:""};
+let micDenied=false;
+function startDictation(textarea,btn){
+  if(!dict){ toast(MIC_MISSING); return; }
+  if(dictState.on){ stopDictation(); return; }
+  stopSpeak();
+  dictState={on:true,target:textarea,base:textarea.value?textarea.value.trim()+" ":"",started:Date.now(),partial:"",btn};
+  btn.classList.add("on"); btn.innerHTML=ICON.mic+" Detener";
+  dict.start().catch(e=>{ dictState.on=false; btn.classList.remove("on"); btn.innerHTML=ICON.mic+" Hablar";
+    if(e&&e.code==="not_granted"){micDenied=true;toast("No hay permiso para usar el micrófono. Actívalo en la configuración del navegador y recarga la página.",6000);dict=null;}
+    else if(e&&e.code==="dismissed") toast("Se cerró la solicitud de micrófono. Pulsa «Hablar» de nuevo para permitirlo.");
+    else toast("No se pudo iniciar el micrófono: "+((e&&(e.message||e.code))||"error desconocido")); });
+}
+async function stopDictation(){
+  if(!dictState.on) return;
+  try{await dict.stop();}catch(e){}
+  finishDict();
+}
+function finishDict(){
+  const b=dictState.btn; dictState.on=false;
+  if(b){b.classList.remove("on");b.innerHTML=ICON.mic+" Hablar";}
+  if(dictState.target){dictState.target.dataset.seconds=String(Math.round((Date.now()-dictState.started)/1000)+(+dictState.target.dataset.seconds||0));dictState.target.dataset.voice="1";dictState.target.dispatchEvent(new Event("input"));}
+}
+const MIC_MISSING="El reconocimiento de voz no está disponible en este navegador. Usa la app instalada desde Google Chrome o Safari (Mac), o Chrome en Android.";
+function micNote(){ return dict?'':'<p class="tiny" style="margin-top:10px;color:#b26200">🎤 '+(micDenied?"Sin permiso de micrófono: actívalo en la configuración del navegador o de la app y recarga.":MIC_MISSING)+'</p>'; }
+const LETTERS=["A","B","C","D","E","F"];
+const ORD={first:0,second:1,third:2,fourth:3,one:0,two:1,three:2,four:3,primera:0,segunda:1,tercera:2,cuarta:3,uno:0,dos:1,tres:2,cuatro:3};
+const STOP=new Set("a an the to of in on at for and or is are was were be it its this that with by as from i you he she we they".split(" "));
+const NUMW={zero:"0",one:"1",two:"2",three:"3",four:"4",five:"5",six:"6",seven:"7",eight:"8",nine:"9",ten:"10",eleven:"11",twelve:"12",fifteen:"15",twenty:"20",thirty:"30",forty:"40",fifty:"50",hundred:"100"};
+const numify=s=>s.split(" ").map(w=>NUMW[w]||w).join(" ");
+function matchOption(spoken,options){
+  const s=norm(spoken); if(!s) return -1;
+  const words=s.split(" ");
+  // letra: "a", "b", "option c", "letter d", "answer b", "la b"
+  const lm=s.match(/^(?:option|letter|answer|la|letra|opcion|opción)?\s*([a-f])$/);
+  if(lm){const i=LETTERS.indexOf(lm[1].toUpperCase()); if(i<options.length) return i;}
+  // 1) coincidencia con el texto de cada opción (prioridad)
+  const sw=new Set(numify(s).split(" ").filter(w=>!STOP.has(w)));
+  let best=-1,bs=0,second=0;
+  options.forEach((o,i)=>{const ow=numify(norm(o)).split(" ").filter(w=>w&&!STOP.has(w));if(!ow.length)return;
+    const hit=ow.filter(w=>sw.has(w)||[...sw].some(x=>x.length>3&&w.length>3&&(x.startsWith(w.slice(0,4))))).length;
+    const sc=hit/ow.length; if(sc>bs){second=bs;bs=sc;best=i;} else if(sc>second) second=sc;});
+  if(bs>=0.5&&bs-second>=0.2) return best;
+  // 2) ordinal dicho por sí solo: "the third one", "number two", "la segunda"
+  const om=s.match(/^(?:the |la |el |number |option |opcion |opción )?(first|second|third|fourth|one|two|three|four|primera|segunda|tercera|cuarta|uno|dos|tres|cuatro)(?: one| opcion| opción)?$/);
+  if(om&&ORD[om[1]]<options.length) return ORD[om[1]];
+  return -1;
+}
+/* Agrega "Responder hablando" a un grupo de opciones. buttons: NodeList de .opt con data-i; texts: textos por data-i */
+function voiceAnswer(host,buttons,texts){
+  if(!dict){ host.insertAdjacentHTML("beforeend",micNote()); return; }
+  const id="v"+uid();
+  host.insertAdjacentHTML("beforeend",'<div class="row" style="margin-top:10px;gap:10px"><button class="btn" id="'+id+'">'+ICON.mic+' Hablar</button><span class="small muted" id="'+id+'s">También puedes responder en voz alta: di la opción (o su letra).</span></div><textarea id="'+id+'t" hidden></textarea>');
+  const btn=document.getElementById(id), ta=document.getElementById(id+"t"), out=document.getElementById(id+"s");
+  btn.onclick=()=>{ ta.value=""; ta.dataset.voice=""; out.textContent="Escuchando… di tu respuesta y pulsa «Detener»."; startDictation(ta,btn); };
+  ta.addEventListener("input",()=>{ if(dictState.on||ta.dataset.voice!=="1") return; ta.dataset.voice="";
+    const heard=ta.value.trim(); if(!heard){out.textContent="No te escuché. Pulsa «Hablar» e inténtalo de nuevo.";return;}
+    const opts=[...buttons].map(b=>texts[+b.dataset.i]);
+    const k=matchOption(heard,opts);
+    if(k<0){out.innerHTML='Escuché: «'+esc(heard)+'». No coincide claramente con una opción; repite o di la letra (A, B, C…).';return;}
+    out.innerHTML='Escuché: «'+esc(heard)+'» → opción '+LETTERS[k];
+    buttons[k].click(); });
+}
+function wireDictation(){
+  if(!dict) return;
+  dict.onPartial&&dict.onPartial(({text})=>{ if(!dictState.on||!dictState.target)return; dictState.partial=text; dictState.target.value=dictState.base+text; });
+  dict.onFinal&&dict.onFinal(({text})=>{ if(!dictState.target)return; dictState.base=dictState.base+text+" "; dictState.partial=""; dictState.target.value=dictState.base; });
+  dict.onState&&dict.onState(({state})=>{ if(state==="idle"&&dictState.on) finishDict(); });
+}
+
+/* ============================================================
+   ICONOS
+   ============================================================ */
+const sv=p=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>';
+const ICON={
+  home:sv('<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>'),
+  path:sv('<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/>'),
+  book:sv('<path d="M4 5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'),
+  mic:sv('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>'),
+  cards:sv('<rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/>'),
+  chart:sv('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+  redo:sv('<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/>'),
+  gear:sv('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
+  play:sv('<path d="M7 4v16l13-8z"/>'),
+  speaker:sv('<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>'),
+  check:sv('<path d="M5 12l5 5L20 7"/>'),
+  diag:sv('<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>')
+};
+const NAV=[["dashboard","Dashboard",ICON.home],["path","My Learning Path",ICON.path],["lesson","Interactive Lessons",ICON.book],["speaking","Speaking Lab",ICON.mic],["vocab","Vocabulary Trainer",ICON.cards],["analytics","Progress Analytics",ICON.chart],["review","Review Center",ICON.redo],["settings","Ajustes y respaldo",ICON.gear]];
+function drawNav(view){
+  $("#nav").innerHTML=NAV.map(n=>'<a href="#'+n[0]+'" class="'+(view===n[0]||(view==="diagnostic"&&n[0]==="dashboard")?"on":"")+'">'+n[2]+'<span>'+n[1]+'</span></a>').join("");
+  const short={dashboard:"Inicio",path:"Ruta",lesson:"Lección",speaking:"Speaking",vocab:"Vocab",analytics:"Progreso",review:"Repaso"};
+  $("#mnav").innerHTML=NAV.filter(n=>short[n[0]]).map(n=>'<a href="#'+n[0]+'" class="'+(view===n[0]?"on":"")+'">'+n[2]+'<span>'+short[n[0]]+'</span></a>').join("");
+}
+
+/* ============================================================
+   BANCO DIAGNÓSTICO
+   ============================================================ */
+const GBANK=[
+ {id:"a1a",l:0,q:"She ___ from Chile.",o:["is","are","am","be"],a:0,x:"Con he/she/it el verbo to be es «is»."},
+ {id:"a1b",l:0,q:"I ___ coffee every morning.",o:["drink","drinks","drinking","am drink"],a:0,x:"Presente simple con «I»: sin -s."},
+ {id:"a1c",l:0,q:"The opposite of «cheap» is ___.",o:["expensive","poor","small","early"],a:0,x:"cheap (barato) ↔ expensive (caro)."},
+ {id:"a1d",l:0,q:"___ you like tea?",o:["Do","Does","Are","Is"],a:0,x:"Preguntas en presente simple con you: «Do»."},
+ {id:"a2a",l:1,q:"Yesterday we ___ to the airport by taxi.",o:["went","go","have gone","were going to"],a:0,x:"«Yesterday» pide pasado simple: went."},
+ {id:"a2b",l:1,q:"This report is ___ than the last one.",o:["longer","more long","longest","the longer"],a:0,x:"Adjetivo corto: comparativo con -er."},
+ {id:"a2c",l:1,q:"There isn't ___ milk in the fridge.",o:["any","some","many","a"],a:0,x:"En negativas con incontables: «any»."},
+ {id:"a2d",l:1,q:"Could you ___ me the salt, please?",o:["pass","borrow","take","bring up"],a:0,x:"«Pass me the salt» = pásame la sal."},
+ {id:"b1a",l:2,q:"I'm looking forward to ___ you next week.",o:["seeing","see","saw","have seen"],a:0,x:"«look forward to» + verbo en -ing."},
+ {id:"b1b",l:2,q:"If it rains tomorrow, we ___ the meeting online.",o:["will hold","would hold","held","hold"],a:0,x:"Primer condicional: if + presente, will + verbo."},
+ {id:"b1c",l:2,q:"I have worked here ___ 2019.",o:["since","for","from","during"],a:0,x:"«since» + punto de inicio; «for» + duración."},
+ {id:"b1d",l:2,q:"Can you ___ an eye on my bag for a minute?",o:["keep","put","hold","take"],a:0,x:"Expresión fija: keep an eye on (vigilar)."},
+ {id:"b2a",l:3,q:"If I ___ about the delay, I would have called the client.",o:["had known","knew","have known","would know"],a:0,x:"Tercer condicional: if + past perfect, would have + participio."},
+ {id:"b2b",l:3,q:"The supplier ___ to have shipped the order already.",o:["is said","says","is saying","said"],a:0,x:"Pasiva de reporte: «is said to have + participio»."},
+ {id:"b2c",l:3,q:"By the time we arrive, the meeting ___.",o:["will have started","will start","has started","starts"],a:0,x:"Futuro perfecto: acción terminada antes de un momento futuro."},
+ {id:"b2d",l:3,q:"We need to ___ the root cause before we propose a fix.",o:["pin down","put off","turn down","give in"],a:0,x:"«pin down» = identificar con precisión."},
+ {id:"c1a",l:4,q:"Not until the contract was signed ___ the real costs.",o:["did we realize","we realized","we did realize","had realized we"],a:0,x:"Inversión tras «Not until…»: auxiliar + sujeto."},
+ {id:"c1b",l:4,q:"She insisted that he ___ present at the hearing.",o:["be","is","was being","will be"],a:0,x:"Subjuntivo tras insist that: forma base «be»."},
+ {id:"c1c",l:4,q:"The proposal got a ___ response: polite, but clearly unenthusiastic.",o:["lukewarm","heated","hands-on","clear-cut"],a:0,x:"«lukewarm» = tibio, poco entusiasta."},
+ {id:"c1d",l:4,q:"Had the shipment arrived on time, we ___ the penalty.",o:["would have avoided","would avoid","avoided","had avoided"],a:0,x:"Condicional invertido (Had… = If… had)."},
+ {id:"c2a",l:5,q:"The CEO's remarks, ___ they were, did little to reassure investors.",o:["candid as","as candid","however candid","so candid"],a:0,x:"Estructura concesiva «adjetivo + as + sujeto + verbo»."},
+ {id:"c2b",l:5,q:"His explanation was so ___ that nobody could follow the argument.",o:["convoluted","concise","cogent","compelling"],a:0,x:"«convoluted» = enrevesado."},
+ {id:"c2c",l:5,q:"Little ___ that the merger would collapse within a year.",o:["did anyone suspect","anyone suspected","anyone did suspect","suspected anyone"],a:0,x:"Inversión tras «Little»: did + sujeto + verbo."},
+ {id:"c2d",l:5,q:"Let's not ___ hairs over the wording; the substance is what matters.",o:["split","cut","pull","break"],a:0,x:"«split hairs» = discutir detalles insignificantes."}
+];
+const G_TOTAL=14;
+const READINGS=[
+ {id:"r1",l:1,title:"A message from a colleague",text:"Hi Marcelo, thanks for sending the photos. The new office looks great! I'm in Santiago next Thursday for a meeting with a supplier. It finishes at four, so maybe we can have coffee after that? There's a nice café near the hotel. Let me know if you're free. — Laura",
+  qs:[{q:"Why is Laura going to Santiago?",o:["For a meeting with a supplier","To visit the new office","To stay at a hotel on vacation","To take photos"],a:0,t:"literal"},
+      {q:"When could they meet?",o:["Thursday after 4 p.m.","Thursday morning","Next week at the hotel","Before the meeting"],a:0,t:"literal"},
+      {q:"What does Laura want?",o:["To spend some time with Marcelo","To cancel the meeting","To change hotels","To get more photos"],a:0,t:"inferencia"}]},
+ {id:"r2",l:3,title:"Supply chain update",text:"Following last month's port strike, our main supplier has rerouted shipments through a secondary terminal. While this has kept goods moving, transit times have lengthened by roughly five days, and storage fees at the new terminal are higher than anticipated. The operations team recommends building a two-week buffer of critical components until the main port resumes normal activity, a measure that would temporarily tie up working capital but significantly reduce the risk of production stoppages.",
+  qs:[{q:"What is the main consequence of the rerouting?",o:["Longer transit times and higher storage costs","Lower costs and faster delivery","The supplier stopped shipping","The port strike ended"],a:0,t:"literal"},
+      {q:"What trade-off does the recommendation involve?",o:["Using more cash now to lower the risk of stopping production","Paying less now but risking delays","Changing suppliers permanently","Closing the secondary terminal"],a:0,t:"inferencia"},
+      {q:"In the text, «tie up» working capital means…",o:["keep money unavailable for other uses","save money in a bank","lose money permanently","borrow money from partners"],a:0,t:"vocabulario"}]},
+ {id:"r3",l:4,title:"Remote work and trust",text:"The debate over remote work has often been framed as a question of productivity, yet the more revealing issue may be trust. Managers who equate visibility with commitment tend to read an empty desk as a lapse in dedication, whereas teams that have learned to judge outcomes rather than presence report fewer conflicts and quicker decisions. Ironically, the push to bring everyone back to the office is sometimes less about output than about restoring a sense of control that was never particularly well founded to begin with.",
+  qs:[{q:"According to the author, what is the deeper issue in the remote work debate?",o:["Trust","Office costs","Technology","Salaries"],a:0,t:"literal"},
+      {q:"What does the author imply about managers who want everyone back?",o:["They may be seeking control more than productivity","They have proven that offices are more productive","They trust their teams completely","They want to reduce conflicts"],a:0,t:"inferencia"},
+      {q:"«Well founded» is closest in meaning to…",o:["justified","well paid","recently created","widely known"],a:0,t:"vocabulario"}]}
+];
+const LISTENING=[
+ {id:"l1",l:1,rate:0.92,text:"Good morning. This is a message for Mr. Fernández. Your flight to Miami tomorrow has changed. It now leaves at ten fifteen, not at nine. Please be at the airport two hours before. Thank you.",
+  qs:[{q:"What has changed?",o:["The departure time","The destination","The airline","The date"],a:0},{q:"What time does the flight leave now?",o:["10:15","9:00","8:15","2:00"],a:0}]},
+ {id:"l2",l:3,rate:1,text:"So, quick update before we wrap up. The supplier finally got back to us, and the good news is they can match the price we discussed. The catch is that they need a twelve-month commitment instead of six. Honestly, I think it's worth it, but I'd like finance to run the numbers before we sign anything. Can we circle back on Friday?",
+  qs:[{q:"What does the supplier want in exchange for the price?",o:["A longer contract","A larger order","Faster payment","A new product"],a:0},{q:"What does the speaker want before signing?",o:["Finance should check the numbers","The supplier should lower the price more","A six-month trial","A meeting on Monday"],a:0}]},
+ {id:"l3",l:4,rate:1.1,text:"Look, I get why the team's frustrated. We've been told for months that the rollout would be smooth, and then it turns out half the integrations weren't even tested. But pulling the plug now would cost us more than pushing through. What I'd suggest is we freeze new features for a sprint, fix what's broken, and be upfront with the client about the revised timeline rather than overpromising again.",
+  qs:[{q:"What is the speaker's position?",o:["Continue, but pause new features to fix problems","Cancel the project","Add more features quickly","Hide the problems from the client"],a:0},{q:"What does «pulling the plug» mean here?",o:["Stopping the project","Restarting the servers","Hiring more people","Testing the integrations"],a:0}]}
+];
+const WRITING_TASKS=[
+ {id:"w1",type:"cotidiana",prompt:"Escribe un mensaje (80–120 palabras) a un amigo estadounidense que viene de visita a Santiago: recomiéndale qué hacer durante un fin de semana y propón un plan para juntarse."},
+ {id:"w2",type:"profesional",prompt:"Escribe un correo (120–180 palabras) a un proveedor internacional: un envío llegó con 10 días de atraso y afectó tu operación. Explica el problema, su impacto y pide medidas concretas para evitar que se repita."}
+];
+const SPEAK_TASKS=[
+ {id:"s1",prompt:"Describe your job: what you do, who you work with, and what you like most about it. (Habla 45–60 segundos)"},
+ {id:"s2",prompt:"Tell me about a recent trip or a memorable weekend. What happened and why do you remember it? (45–60 segundos)"}
+];
+const PRO_TASK={id:"p1",prompt:"Situación profesional: tu director quiere mantener al proveedor actual porque es el más barato. Tú recomiendas cambiarlo por otro un 8% más caro pero más confiable. Defiende tu recomendación ante el director (oral o escrita, 100–160 palabras)."};
+const DIAG_STEPS=[["intro","Inicio"],["grammar","Gramática y vocabulario"],["reading","Reading"],["listening","Listening"],["writing","Writing"],["speaking","Speaking"],["pro","Inglés profesional"],["result","Resultado"]];
+
+/* ============================================================
+   RUTEO
+   ============================================================ */
+let view="dashboard";
+function go(v){ if(location.hash==="#"+v) render(); else location.hash=v; }
+addEventListener("hashchange",()=>render());
+function render(){
+  stopSpeak();
+  if(dictState.on) stopDictation();
+  view=(location.hash||"#dashboard").slice(1)||"dashboard";
+  const valid=NAV.map(n=>n[0]).concat(["diagnostic"]);
+  if(!valid.includes(view)) view="dashboard";
+  drawNav(view);
+  const m=$("#main");
+  const fn={dashboard:vDashboard,diagnostic:vDiagnostic,path:vPath,lesson:vLesson,speaking:vSpeaking,vocab:vVocab,analytics:vAnalytics,review:vReview,settings:vSettings}[view];
+  m.innerHTML=""; fn(m); window.scrollTo(0,0);
+  document.querySelectorAll(".msave").forEach(el=>el.innerHTML=statusHTML);
+}
+function header(title,sub,right){return '<div class="top"><div><h1>'+esc(title)+'</h1>'+(sub?'<p class="sub">'+sub+'</p>':'')+'<div class="msave"></div></div>'+(right||'')+'</div>';}
+
+/* ============================================================
+   NIVELES Y DATOS DERIVADOS
+   ============================================================ */
+function allLessons(){const out=[];if(!S.course)return out;S.course.modules.forEach((m,mi)=>m.units.forEach((u,ui)=>u.lessons.forEach((l,li)=>out.push({m,u,l,mi,ui,li}))));return out;}
+function lessonById(id){return allLessons().find(x=>x.l.id===id);}
+function nextLesson(){const ls=allLessons();return ls.find(x=>x.l.status==="review")||ls.find(x=>x.l.status==="available");}
+function courseProgress(){const ls=allLessons();if(!ls.length)return 0;return ls.filter(x=>x.l.status==="done").length/ls.length;}
+function skillScore(skill){
+  const rs=S.results.filter(r=>r.skill===skill||(skill==="reading"&&r.skill==="reading_writing")||(skill==="writing"&&r.skill==="reading_writing")).slice(-5);
+  if(!rs.length) return null; return rs.reduce((a,r)=>a+r.score,0)/rs.length;
+}
+function currentLevels(){return (S.diag.result&&S.diag.result.levels)||{};}
+function globalLevel(){return S.diag.result&&S.diag.result.global?S.diag.result.global:null;}
+function weakest(){
+  const lv=currentLevels(), arr=[];
+  SKILLS.forEach(([k,n])=>{const L=lv[k]&&LEVELS.indexOf(lv[k].level);const sc=skillScore(k);if(L!=null&&L>=0)arr.push({k,n,v:L*20+(sc==null?50:sc)/5});});
+  return arr.sort((a,b)=>a.v-b.v).slice(0,3);
+}
+function weekStats(){
+  const ws=weekStart();let min=0;for(const d in S.time.byDay) if(d>=ws) min+=S.time.byDay[d];
+  const lessons=S.results.filter(r=>r.type==="lesson"&&r.passed&&r.date.slice(0,10)>=ws).length;
+  return {min,lessons};
+}
+
+/* ============================================================
+   CONTINUE LEARNING
+   ============================================================ */
+function continueLearning(){
+  if(S.diag.status!=="done"){go("diagnostic");return;}
+  if(!S.course){go("path");return;}
+  if(S.current&&S.current.lessonId&&S.current.step==="done"){S.current=null;save();}
+  if(S.current&&S.current.lessonId){go("lesson");return;}
+  const n=nextLesson(); if(n){openLesson(n.l.id);return;}
+  go("path");
+}
+function continueLabel(){
+  if(S.diag.status==="none") return ["Comenzar diagnóstico","Evaluación inicial de 25–35 minutos para medir tu nivel real."];
+  if(S.diag.status!=="done") return ["Continue Learning","Retoma tu diagnóstico en: "+(DIAG_STEPS.find(s=>s[0]===S.diag.step)||["",""])[1]];
+  if(!S.course) return ["Continue Learning","Crea tu programa personalizado de 6 meses."];
+  if(S.current&&S.current.lessonId&&S.current.step!=="done"){const x=lessonById(S.current.lessonId);return ["Continue Learning","Retoma: "+(x?x.l.title:"tu lección")+(S.current.step?" · paso "+stepName(S.current.step):"")];}
+  const n=nextLesson(); return ["Continue Learning",n?"Siguiente: "+n.l.title:"Programa completado"];
+}
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+function vDashboard(m){
+  const [cl,cs]=continueLabel(), g=globalLevel(), wk=weekStats(), prog=courseProgress();
+  const lv=currentLevels();
+  const recent=S.results.slice(-5).reverse();
+  const dueCards=S.vocab.filter(c=>c.due<=today()).length;
+  const openErr=S.errors.filter(e=>!e.resolved).length;
+  m.innerHTML=header("Hola","Tu academia personal de inglés. Todo tu avance queda guardado y puedes retomarlo donde lo dejaste.")+
+  '<div class="card hero" style="margin-bottom:16px"><div class="row between" style="gap:20px"><div><div class="k" style="color:#cdd7ff">Tu próximo paso</div><h2 style="margin-top:6px;font-size:24px">'+esc(cs)+'</h2></div>'+
+  '<button class="btn big" id="cont">'+ICON.play+' '+esc(cl)+'</button></div></div>'+
+  '<div class="grid g4 keep" style="margin-bottom:16px">'+
+   stat("Nivel global",g||"—",g?"Estimación MCER provisional":"Haz el diagnóstico")+
+   stat("Programa",Math.round(prog*100)+"%",S.course?allLessons().filter(x=>x.l.status==="done").length+" de "+allLessons().length+" lecciones":"Sin programa aún")+
+   stat("Tiempo de estudio",fmtMin(S.time.total),"Acumulado total")+
+   stat("Esta semana",fmtMin(wk.min),wk.lessons+" de "+S.prefs.goalLessons+" lecciones meta")+
+  '</div>'+
+  '<div class="grid g2" style="margin-bottom:16px">'+
+   '<div class="card"><div class="row between"><h3>Nivel por competencia</h3><a href="#analytics" class="small">Ver evolución</a></div><div class="skills" style="margin-top:14px">'+
+    SKILLS.map(([k,n])=>{const x=lv[k];const L=x&&x.level?LEVELS.indexOf(x.level):-1;return '<div class="skill"><span>'+n+'</span><div class="bar"><i style="width:'+(L>=0?(L+1)/6*100:0)+'%"></i></div><b>'+(x&&x.level?x.level:'<span class="muted small">—</span>')+'</b></div>';}).join("")+
+   '</div>'+(lv.speaking&&!lv.speaking.level?'<p class="tiny muted" style="margin-top:10px">Speaking/Listening sin nivel cuando no se pudieron evaluar directamente.</p>':'')+'</div>'+
+   '<div class="card"><h3>Objetivos semanales</h3><div style="margin-top:14px;display:grid;gap:14px">'+
+    goalRow("Minutos de estudio",wk.min,S.prefs.goalMin)+goalRow("Lecciones aprobadas",wk.lessons,S.prefs.goalLessons)+
+   '</div><div class="row" style="margin-top:18px;gap:8px">'+
+    '<a class="pill '+(dueCards?"warn":"gray")+'" href="#vocab">'+dueCards+' tarjetas para repasar</a>'+
+    '<a class="pill '+(openErr?"bad":"gray")+'" href="#review">'+openErr+' errores por corregir</a>'+
+   '</div><h3 style="margin-top:20px">Competencias más débiles</h3><div class="row" style="margin-top:8px">'+
+    (weakest().map(w=>'<span class="pill bad">'+w.n+'</span>').join("")||'<span class="muted small">Aparecerán tras el diagnóstico.</span>')+'</div></div>'+
+  '</div>'+
+  '<div class="grid g2"><div class="card"><h3>Evolución del rendimiento</h3>'+perfChart()+'</div>'+
+   '<div class="card"><h3>Últimos resultados</h3>'+(recent.length?'<table style="margin-top:8px"><tr><th>Actividad</th><th>Puntaje</th></tr>'+recent.map(r=>'<tr><td>'+esc(r.title||r.type)+'<div class="tiny muted">'+new Date(r.date).toLocaleDateString("es-CL")+' · '+esc(SKILL_LABEL[r.skill]||r.skill)+'</div></td><td><b>'+(r.type==="diagnostic"?esc((r.title.split("·")[1]||"").trim()):Math.round(r.score)+'%')+'</b></td></tr>').join("")+'</table>':'<p class="muted small" style="margin-top:10px">Aún no hay resultados.</p>')+'</div></div>';
+  $("#cont").onclick=continueLearning;
+}
+function stat(k,n,d){return '<div class="card stat"><div class="k">'+k+'</div><div class="n">'+esc(n)+'</div><div class="d">'+esc(d)+'</div></div>';}
+function goalRow(lbl,v,goal){const p=clamp(v/(goal||1),0,1);return '<div><div class="row between small"><span>'+lbl+'</span><b>'+(lbl.includes("Min")?Math.round(v):v)+' / '+goal+'</b></div><div class="bar" style="margin-top:6px"><i style="width:'+p*100+'%"></i></div></div>';}
+function perfChart(){
+  const rs=S.results.filter(r=>r.type==="lesson"||r.type==="review"||r.type==="speaking").slice(-20);
+  if(rs.length<2) return '<p class="muted small" style="margin-top:10px">El gráfico aparece después de 2 actividades evaluadas.</p>';
+  return lineChart([{name:"Puntaje",color:"#3b5bdb",pts:rs.map(r=>r.score)}],rs.map(r=>r.date.slice(5,10)),100);
+}
+
+/* ============================================================
+   GRÁFICOS SVG
+   ============================================================ */
+function lineChart(series,labels,maxY){
+  const W=560,H=200,pl=34,pr=10,pt=10,pb=26,n=labels.length;
+  const x=i=>pl+(n<=1?0:i*(W-pl-pr)/(n-1)), y=v=>pt+(1-v/maxY)*(H-pt-pb);
+  let g='';
+  [0,25,50,75,100].forEach(t=>{const yy=y(t*maxY/100);g+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+yy+'" y2="'+yy+'" stroke="#edf0f7"/><text x="'+(pl-6)+'" y="'+(yy+4)+'" font-size="10" fill="#8d97b5" text-anchor="end">'+Math.round(t*maxY/100)+'</text>';});
+  const step=Math.ceil(n/8);labels.forEach((l,i)=>{if(i%step===0)g+='<text x="'+x(i)+'" y="'+(H-8)+'" font-size="10" fill="#8d97b5" text-anchor="middle">'+esc(l)+'</text>';});
+  series.forEach(s=>{const pts=s.pts.map((v,i)=>v==null?null:[x(i),y(v)]).filter(Boolean);if(!pts.length)return;
+    g+='<polyline fill="none" stroke="'+s.color+'" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="'+pts.map(p=>p.join(",")).join(" ")+'"/>';
+    pts.forEach(p=>g+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#fff" stroke="'+s.color+'" stroke-width="2"/>');});
+  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Gráfico de evolución">'+g+'</svg>'+(series.length>1?'<div class="legend">'+series.map(s=>'<span><i style="background:'+s.color+'"></i>'+esc(s.name)+'</span>').join("")+'</div>':'');
+}
+function barChart(items,maxV,unit,color){
+  if(!items.length) return '<p class="muted small">Sin datos todavía.</p>';
+  const W=460,rowH=28,H=items.length*rowH+6,pl=150;
+  let g='';items.forEach((it,i)=>{const w=maxV?(it.v/maxV)*(W-pl-60):0;const yy=i*rowH+4;
+    g+='<text x="'+(pl-8)+'" y="'+(yy+15)+'" font-size="13" fill="#5d6782" text-anchor="end">'+esc(it.k.length>22?it.k.slice(0,21)+"…":it.k)+'</text>'+
+       '<rect x="'+pl+'" y="'+(yy+3)+'" width="'+Math.max(2,w)+'" height="16" rx="5" fill="'+(it.c||color||"#3b5bdb")+'"/>'+
+       '<text x="'+(pl+Math.max(2,w)+6)+'" y="'+(yy+15)+'" font-size="12" fill="#141a2e" font-weight="600">'+Math.round(it.v)+(unit||"")+'</text>';});
+  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img">'+g+'</svg>';
+}
+
+/* ============================================================
+   DIAGNÓSTICO
+   ============================================================ */
+function stepsBar(cur){const i=DIAG_STEPS.findIndex(s=>s[0]===cur);return '<div class="steps">'+DIAG_STEPS.map((s,j)=>'<span class="'+(j<i?"done":j===i?"on":"")+'">'+s[1]+'</span>').join("")+'</div>';}
+function D(){if(!S.diag.g)S.diag.g={asked:[],idx:2,cur:null};return S.diag;}
+function vDiagnostic(m){
+  const d=D(); if(d.status==="none"){d.status="in_progress";d.startedAt=nowISO();save();}
+  const step=d.step||"intro";
+  m.innerHTML=header("Test de diagnóstico","Evaluación progresiva basada en el MCER. Tu avance se guarda en cada respuesta: puedes cerrar y continuar después.")+stepsBar(step)+'<div class="card" id="dc"></div>';
+  const c=$("#dc");
+  ({intro:dIntro,grammar:dGrammar,reading:dReading,listening:dListening,writing:dWriting,speaking:dSpeaking,pro:dPro,result:dResult}[step]||dIntro)(c);
+}
+function dNext(step){S.diag.step=step;save();render();}
+function dIntro(c){
+  c.innerHTML='<h2>Antes de empezar</h2><div style="display:grid;gap:10px;margin:14px 0 20px" class="small">'+
+  '<p><b>1. Gramática y vocabulario</b> — '+G_TOTAL+' preguntas que se adaptan a tus respuestas (A1 a C2).</p>'+
+  '<p><b>2. Reading</b> — 3 textos con preguntas literales, de inferencia y de vocabulario.</p>'+
+  '<p><b>3. Listening</b> — '+(tts?'3 audios en inglés. Solo puedes escucharlos (máx. 2 veces); la transcripción aparece después de responder.':'<span style="color:var(--bad)">El audio no está disponible en este navegador o app: el listening quedará sin nivel asignado.</span>')+'</p>'+
+  '<p><b>4. Writing</b> — 2 textos: uno cotidiano y uno profesional. La IA los corrige.</p>'+
+  '<p><b>5. Speaking</b> — '+(dict?'respondes hablando; tu voz se transcribe y se evalúa fluidez, gramática, vocabulario y coherencia. <b>La pronunciación no se puede medir con exactitud</b> a partir de una transcripción, así que no se le asigna puntaje.':'el dictado por voz no está disponible aquí (funciona en Chrome o en la app de escritorio). Podrás escribir, pero Speaking quedará sin nivel.')+'</p>'+
+  '<p><b>6. Inglés profesional</b> — defender una decisión ante un director.</p></div>'+
+  (sample?'':'<div class="fb bad small">La corrección con IA necesita tu clave gratuita de Gemini (en Ajustes). Writing y Speaking se guardarán, pero se evaluarán cuando abras la app desde claude.ai.</div>')+
+  '<div class="row" style="margin-top:16px"><button class="btn pri big" id="go">Empezar</button><span class="muted small">Duración aproximada: 30 minutos</span></div>';
+  $("#go").onclick=()=>dNext("grammar");
+}
+function pickItem(level,asked){const used=new Set(asked.map(a=>a.id));
+  for(let dl=0;dl<6;dl++){for(const L of [level+dl,level-dl]){const it=GBANK.find(x=>x.l===L&&!used.has(x.id));if(it)return it;}}return null;}
+function shuffleOpts(it,seed){const idx=it.o.map((_,i)=>i);let s=0;for(const ch of (seed||it.id))s=(s*31+ch.charCodeAt(0))>>>0;for(let i=idx.length-1;i>0;i--){s=(s*1103515245+12345)>>>0;const j=s%(i+1);[idx[i],idx[j]]=[idx[j],idx[i]];}return idx;}
+function dGrammar(c){
+  const g=S.diag.g;
+  if(g.asked.length>=G_TOTAL){dNext("reading");return;}
+  if(!g.cur){const it=pickItem(g.idx,g.asked);if(!it){dNext("reading");return;}g.cur=it.id;save();}
+  const it=GBANK.find(x=>x.id===g.cur), order=shuffleOpts(it);
+  c.innerHTML='<div class="row between"><span class="k">Pregunta '+(g.asked.length+1)+' de '+G_TOTAL+'</span><div class="bar" style="width:160px"><i style="width:'+g.asked.length/G_TOTAL*100+'%"></i></div></div>'+
+   '<p class="q">'+esc(it.q)+'</p><div class="opts">'+order.map(i=>'<button class="opt" data-i="'+i+'">'+esc(it.o[i])+'</button>').join("")+'</div><p class="tiny muted" style="margin-top:14px">Si no sabes, elige la que te parezca más natural: el test se adapta.</p>';
+  c.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const ch=+b.dataset.i, ok=ch===it.a;
+    g.asked.push({id:it.id,l:it.l,ok,ch:it.o[ch]});
+    if(!ok) addError({skill:"grammar",kind:"grammar",prompt:it.q,wrong:it.o[ch],correct:it.o[it.a],explanation:it.x});
+    g.idx=clamp(g.idx+(ok?1:-1),0,5); g.cur=null; save(); dGrammar(c);
+  });
+}
+function grammarLevel(){
+  const a=S.diag.g.asked; if(!a.length) return null;
+  const by=[0,1,2,3,4,5].map(L=>{const xs=a.filter(x=>x.l===L);return {n:xs.length,ok:xs.filter(x=>x.ok).length};});
+  let lvl=-1; for(let L=0;L<6;L++){ if(by[L].n&&by[L].ok/by[L].n>=0.6) lvl=L; else if(by[L].n&&by[L].ok/by[L].n<0.5&&lvl>=L-1) break; }
+  return {level:LEVELS[Math.max(0,lvl)],by,correct:a.filter(x=>x.ok).length,total:a.length};
+}
+function dReading(c){
+  const d=S.diag; if(!d.r)d.r={i:0,ans:[]};
+  const R=READINGS[d.r.i]; if(!R){dNext("listening");return;}
+  c.innerHTML='<div class="row between"><span class="k">Texto '+(d.r.i+1)+' de '+READINGS.length+'</span></div><h3 style="margin:8px 0 12px">'+esc(R.title)+'</h3><div class="reading">'+esc(R.text)+'</div>'+
+   R.qs.map((q,qi)=>{const ord=shuffleOpts(q,R.id+qi);return '<p class="q" style="font-size:16px">'+(qi+1)+'. '+esc(q.q)+' <span class="tag">'+q.t+'</span></p><div class="opts" data-q="'+qi+'">'+ord.map(i=>'<button class="opt" data-i="'+i+'">'+esc(q.o[i])+'</button>').join("")+'</div>';}).join('<div style="height:10px"></div>')+
+   '<div class="row" style="margin-top:18px"><button class="btn pri" id="nx" disabled>Continuar</button></div>';
+  const sel={}; c.querySelectorAll(".opts").forEach(g=>g.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{g.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");sel[g.dataset.q]=+b.dataset.i;$("#nx").disabled=Object.keys(sel).length<R.qs.length;}));
+  $("#nx").onclick=()=>{const ok=R.qs.map((q,i)=>sel[i]===q.a);d.r.ans.push({id:R.id,l:R.l,ok});
+    d.r.i++;save();dReading(c);};
+}
+function readingLevel(){const a=(S.diag.r&&S.diag.r.ans)||[];if(!a.length)return null;let lvl=0;a.forEach(t=>{const p=t.ok.filter(Boolean).length/t.ok.length;if(p>=0.67)lvl=Math.max(lvl,t.l);else if(p>=0.34)lvl=Math.max(lvl,t.l-1);});return {level:LEVELS[lvl],detail:a.map(t=>({text:t.id,textLevel:LEVELS[t.l],correct:t.ok.filter(Boolean).length+"/"+t.ok.length}))};}
+function dListening(c){
+  const d=S.diag; if(!d.l)d.l={i:0,ans:[],plays:{}};
+  if(!tts){
+    c.innerHTML='<h2>Listening</h2><p class="muted" style="margin-top:10px">El audio no está disponible en este navegador o app (por ejemplo Safari o las apps móviles). Para no reemplazar la escucha por lectura, esta sección queda <b>sin evaluar</b>. Puedes repetir el diagnóstico de listening más adelante desde Ajustes, en Chrome o en la app de escritorio.</p><div class="row" style="margin-top:18px"><button class="btn pri" id="sk">Continuar</button></div>';
+    $("#sk").onclick=()=>{d.l.skipped=true;dNext("writing");};return;
+  }
+  const L=LISTENING[d.l.i]; if(!L){dNext("writing");return;}
+  const plays=d.l.plays[L.id]||0;
+  c.innerHTML='<span class="k">Audio '+(d.l.i+1)+' de '+LISTENING.length+'</span><p class="muted small" style="margin:8px 0 16px">Escucha y responde. Puedes reproducir el audio hasta 2 veces. La transcripción se muestra después de responder.</p>'+
+   '<div class="row"><button class="btn pri" id="pl" '+(plays>=2?"disabled":"")+'>'+ICON.speaker+(plays?' Escuchar de nuevo':' Escuchar')+'</button><span class="small muted" id="pls">Reproducciones: '+plays+' / 2</span></div>'+
+   '<div id="lq" style="margin-top:20px;'+(plays?'':'display:none')+'">'+L.qs.map((q,qi)=>{const ord=shuffleOpts(q,L.id+qi);return '<p class="q" style="font-size:16px">'+(qi+1)+'. '+esc(q.q)+'</p><div class="opts" data-q="'+qi+'">'+ord.map((i,k)=>'<button class="opt" data-i="'+i+'"><b>'+LETTERS[k]+'.</b> '+esc(q.o[i])+'</button>').join("")+'</div><div class="vhost" data-q="'+qi+'"></div>';}).join('<div style="height:10px"></div>')+
+   '<div class="row" style="margin-top:18px"><button class="btn pri" id="nx" disabled>Responder</button></div></div><div id="tr"></div>';
+  $("#pl").onclick=async()=>{if(dictState.on) await stopDictation();const b=$("#pl");b.disabled=true;d.l.plays[L.id]=(d.l.plays[L.id]||0)+1;save();$("#pls").textContent="Reproduciendo…";
+    try{await speak(L.text,{rate:(S.prefs.rate||1)*L.rate});}catch(e){toast("No se pudo reproducir el audio.");}
+    const p=d.l.plays[L.id];$("#pls").textContent="Reproducciones: "+p+" / 2";b.disabled=p>=2;b.innerHTML=ICON.speaker+" Escuchar de nuevo";$("#lq").style.display="";};
+  const sel={}; c.querySelectorAll("#lq .opts").forEach(g=>g.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{g.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");sel[g.dataset.q]=+b.dataset.i;$("#nx").disabled=Object.keys(sel).length<L.qs.length;}));
+  c.querySelectorAll("#lq .vhost").forEach(h=>{const g=c.querySelector('#lq .opts[data-q="'+h.dataset.q+'"]');voiceAnswer(h,g.querySelectorAll(".opt"),L.qs[+h.dataset.q].o);});
+  $("#nx").onclick=async()=>{stopSpeak(); if(dictState.on) await stopDictation(); c.querySelectorAll("#lq .vhost").forEach(h=>h.innerHTML="");const ok=L.qs.map((q,i)=>sel[i]===q.a);d.l.ans.push({id:L.id,l:L.l,ok});
+    c.querySelectorAll("#lq .opts").forEach(g=>{const q=L.qs[+g.dataset.q];g.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(+b.dataset.i===q.a)b.classList.add("right");else if(b.classList.contains("sel"))b.classList.add("wrong");});});
+    $("#tr").innerHTML='<div class="fb info" style="margin-top:16px"><b>Transcripción:</b> '+esc(L.text)+'</div><div class="row" style="margin-top:14px"><button class="btn pri" id="nx2">Siguiente</button></div>';
+    $("#nx").remove(); $("#pl").disabled=true; d.l.i++; save();
+    $("#nx2").onclick=()=>dListening(c);};
+}
+function listeningLevel(){const d=S.diag.l;if(!d||d.skipped||!d.ans.length)return null;let lvl=0;d.ans.forEach(t=>{const p=t.ok.filter(Boolean).length/t.ok.length;if(p>=0.99)lvl=Math.max(lvl,t.l);else if(p>=0.5)lvl=Math.max(lvl,t.l-1);});return {level:LEVELS[lvl],detail:d.ans.map(t=>({audio:t.id,audioLevel:LEVELS[t.l],correct:t.ok.filter(Boolean).length+"/"+t.ok.length}))};}
+
+const EVAL_SCHEMA='Return ONLY JSON: {"cefr":"A1|A2|B1|B2|C1|C2","scores":{"accuracy":0-100,"vocabulary":0-100,"cohesion":0-100,"naturalness":0-100,"clarity":0-100},"summary_es":"2-3 sentences in Spanish","strengths_es":["..."],"corrections":[{"original":"exact fragment from the text","corrected":"better version","type":"grammar|naturalness|vocabulary","explanation_es":"short explanation in Spanish; for naturalness say it is not a grammar error"}],"better_expressions":[{"expression":"natural native expression","meaning_es":"...","example":"..."}]}. Max 8 corrections, the most important ones. Distinguish real grammar errors from merely unnatural phrasing.';
+async function evalWriting(task,text){
+  return askJSON("You are a CEFR-certified English examiner. "+LEARNER+"\nTask given to the learner: "+task+"\nLearner's text:\n\"\"\"\n"+text+"\n\"\"\"\nAssess grammatical accuracy, lexical range, cohesion, naturalness and clarity. "+EVAL_SCHEMA,"default");
+}
+async function evalSpeaking(items){
+  const desc=items.map((it,i)=>"Prompt "+(i+1)+": "+it.prompt+"\nMode: "+(it.voice?"spoken, transcribed by speech recognition; speaking time "+(it.seconds||"?")+" s; "+wc(it.text)+" words":"TYPED (not spoken)")+"\nTranscript:\n\"\"\""+it.text+"\"\"\"").join("\n\n");
+  return askJSON("You are a CEFR speaking examiner. "+LEARNER+"\n"+desc+"\nEvaluate fluency (use words per minute and continuity, fillers, self-corrections visible in the transcript), grammar, vocabulary range and communicative ability/coherence. IMPORTANT: you cannot hear the audio. Do NOT score pronunciation; set pronunciation_note_es to explain that pronunciation was not assessed, and only mention possible intelligibility issues if the transcript shows clearly misrecognized words. If any answer was typed, say speaking cannot be rated for it. Return ONLY JSON: {\"cefr\":\"A1..C2 or null if not assessable\",\"scores\":{\"fluency\":0-100,\"grammar\":0-100,\"vocabulary\":0-100,\"communication\":0-100},\"wpm\":number|null,\"pronunciation_note_es\":\"...\",\"summary_es\":\"...\",\"strengths_es\":[\"...\"],\"corrections\":[{\"original\":\"...\",\"corrected\":\"...\",\"type\":\"grammar|naturalness|vocabulary\",\"explanation_es\":\"...\"}],\"better_expressions\":[{\"expression\":\"...\",\"meaning_es\":\"...\",\"example\":\"...\"}]}");
+}
+const wc=t=>String(t||"").trim().split(/\s+/).filter(Boolean).length;
+function evalCard(ev){
+  if(!ev) return '';
+  const sc=ev.scores||{};
+  return '<div class="fb info" style="margin-top:16px"><div class="row between"><b>Evaluación</b>'+(ev.cefr?'<span class="pill">Nivel estimado: '+esc(ev.cefr)+'</span>':'')+'</div>'+
+   '<p style="margin-top:8px">'+esc(ev.summary_es||"")+'</p>'+
+   (Object.keys(sc).length?'<div class="row small" style="margin-top:8px;gap:14px">'+Object.entries(sc).map(([k,v])=>'<span>'+esc(k)+': <b>'+Math.round(v)+'</b></span>').join("")+'</div>':'')+
+   (ev.pronunciation_note_es?'<p class="small" style="margin-top:8px"><b>Pronunciación:</b> '+esc(ev.pronunciation_note_es)+'</p>':'')+'</div>'+
+   ((ev.corrections||[]).length?'<h3 style="margin:16px 0 8px">Correcciones</h3><div style="display:grid;gap:8px">'+ev.corrections.map(k=>'<div class="corr"><div class="row"><span class="tag '+(k.type==="grammar"?"g":k.type==="naturalness"?"n":"v")+'">'+(k.type==="grammar"?"Error gramatical":k.type==="naturalness"?"Poco natural":"Vocabulario")+'</span></div><div class="o">'+esc(k.original)+'</div><div class="c">'+esc(k.corrected)+'</div><div class="small muted">'+esc(k.explanation_es)+'</div></div>').join("")+'</div>':'')+
+   ((ev.better_expressions||[]).length?'<h3 style="margin:16px 0 8px">Expresiones naturales para ti</h3><ul class="small" style="margin:0;padding-left:18px">'+ev.better_expressions.map(b=>'<li><b>'+esc(b.expression)+'</b> — '+esc(b.meaning_es)+(b.example?' <i class="muted">('+esc(b.example)+')</i>':'')+'</li>').join("")+'</ul>':'');
+}
+function absorbEval(ev,skill,source){
+  if(!ev) return;
+  (ev.corrections||[]).forEach(k=>addError({skill,kind:k.type==="grammar"?"grammar":k.type==="naturalness"?"naturalness":"vocab",prompt:"Corrige: "+k.original,wrong:k.original,correct:k.corrected,explanation:k.explanation_es,source}));
+  (ev.better_expressions||[]).forEach(b=>addCard(b.expression,b.meaning_es,b.example,source));
+}
+function textTask(c,opts){
+  // opts: {title, prompt, key(stored obj), onEval(ev), next, allowVoice, speakingMode}
+  const st=opts.store;
+  c.innerHTML=(opts.kicker?'<span class="k">'+opts.kicker+'</span>':'')+'<h2 style="margin:6px 0 10px">'+esc(opts.title)+'</h2><p style="margin-bottom:14px">'+esc(opts.prompt)+'</p>'+
+   '<textarea id="ta" placeholder="'+(opts.speaking&&dict?"Pulsa «Hablar» y responde en voz alta. También puedes escribir.":"Escribe tu respuesta en inglés…")+'">'+esc(st.text||"")+'</textarea>'+
+   '<div class="row between small muted" style="margin-top:6px"><span id="wcn">'+wc(st.text)+' palabras</span><span id="sec"></span></div>'+
+   '<div class="row" style="margin-top:14px">'+(opts.voice&&dict?'<button class="btn" id="mic">'+ICON.mic+' Hablar</button>':'')+
+   '<button class="btn pri" id="sub">'+(sample?"Enviar y evaluar":"Guardar respuesta")+'</button>'+(opts.skippable?'<button class="btn ghost" id="skp">Omitir</button>':'')+'</div>'+(opts.voice?micNote():'')+'<div id="ev">'+evalCard(st.eval)+'</div>'+
+   (st.eval||st.saved?'<div class="row" style="margin-top:16px"><button class="btn pri" id="nx">Continuar</button></div>':'');
+  const ta=$("#ta"); ta.dataset.seconds=st.seconds||0; if(st.voice)ta.dataset.voice="1";
+  let tmr=null; ta.oninput=()=>{$("#wcn").textContent=wc(ta.value)+" palabras";st.text=ta.value;st.seconds=+ta.dataset.seconds||0;st.voice=ta.dataset.voice==="1";clearTimeout(tmr);tmr=setTimeout(save,1200);};
+  if($("#mic")) $("#mic").onclick=()=>startDictation(ta,$("#mic"));
+  if($("#skp")) $("#skp").onclick=()=>{st.skipped=true;save();opts.next();};
+  $("#sub").onclick=async()=>{
+    if(dictState.on) await stopDictation();
+    st.text=ta.value.trim(); st.seconds=+ta.dataset.seconds||0; st.voice=ta.dataset.voice==="1";
+    if(wc(st.text)<15){toast("Escribe o di al menos 15 palabras.");return;}
+    st.saved=true; save();
+    if(!sample){textTask(c,opts);return;}
+    const b=$("#sub"); b.disabled=true; b.innerHTML='<span class="spin"></span> Evaluando…';
+    try{ st.eval=await opts.evaluate(st); absorbEval(st.eval,opts.skill,opts.title); save(); textTask(c,opts); }
+    catch(e){ b.disabled=false; b.textContent="Enviar y evaluar"; toast(e.message||"No se pudo evaluar."); }
+  };
+  if($("#nx")) $("#nx").onclick=opts.next;
+}
+function dWriting(c){
+  const d=S.diag; if(!d.w)d.w={i:0,items:WRITING_TASKS.map(t=>({id:t.id,prompt:t.prompt}))};
+  const t=d.w.items[d.w.i]; if(!t){dNext("speaking");return;}
+  textTask(c,{kicker:"Writing "+(d.w.i+1)+" de 2 · situación "+WRITING_TASKS[d.w.i].type,title:WRITING_TASKS[d.w.i].type==="cotidiana"?"Mensaje a un amigo":"Correo a un proveedor",prompt:t.prompt,store:t,skill:"writing",
+    evaluate:st=>evalWriting(st.prompt,st.text),next:()=>{d.w.i++;save();dWriting(c);}});
+}
+function dSpeaking(c){
+  const d=S.diag; if(!d.s)d.s={i:0,items:SPEAK_TASKS.map(t=>({id:t.id,prompt:t.prompt}))};
+  if(d.s.i>=d.s.items.length){
+    // evaluación conjunta
+    if(d.s.eval||!sample||d.s.items.every(x=>x.skipped)){dNext("pro");return;}
+    c.innerHTML='<div class="empty"><span class="spin"></span> Analizando tus respuestas orales…</div>';
+    evalSpeaking(d.s.items.filter(x=>!x.skipped)).then(ev=>{d.s.eval=ev;absorbEval(ev,"speaking","Diagnóstico speaking");save();
+      c.innerHTML='<h2>Resultado de Speaking</h2>'+evalCard(ev)+'<div class="row" style="margin-top:16px"><button class="btn pri" id="nx">Continuar</button></div>';$("#nx").onclick=()=>dNext("pro");})
+    .catch(e=>{c.innerHTML='<p>'+esc(e.message)+'</p><div class="row" style="margin-top:14px"><button class="btn pri" id="rt">Reintentar</button><button class="btn" id="sk">Continuar sin evaluar</button></div>';$("#rt").onclick=()=>dSpeaking(c);$("#sk").onclick=()=>dNext("pro");});
+    return;
+  }
+  const t=d.s.items[d.s.i];
+  textTask(c,{kicker:"Speaking "+(d.s.i+1)+" de 2"+(dict?"":" · dictado no disponible (respuesta escrita, sin nivel de speaking)"),title:"Responde en voz alta",prompt:t.prompt,store:t,skill:"speaking",voice:true,speaking:true,skippable:true,
+    evaluate:async st=>null, next:()=>{d.s.i++;save();dSpeaking(c);}});
+  // en speaking la evaluación se hace al final de las 2 respuestas
+  const sub=$("#sub"); sub.textContent="Guardar respuesta"; sub.onclick=async()=>{ if(dictState.on) await stopDictation(); const ta=$("#ta"); t.text=ta.value.trim(); t.seconds=+ta.dataset.seconds||0; t.voice=ta.dataset.voice==="1"; if(wc(t.text)<15){toast("Responde con al menos 15 palabras.");return;} d.s.i++; save(); dSpeaking(c); };
+}
+function dPro(c){
+  const d=S.diag; if(!d.p)d.p={prompt:PRO_TASK.prompt};
+  textTask(c,{kicker:"Inglés profesional",title:"Defiende tu recomendación",prompt:PRO_TASK.prompt,store:d.p,skill:"writing",voice:true,
+    evaluate:st=>evalWriting(st.prompt+(st.voice?" (The learner SPOKE this answer; it is a speech transcript.)":""),st.text),next:()=>dNext("result")});
+}
+async function synthesize(){
+  const d=S.diag;
+  const data={grammar_vocab:grammarLevel(),reading:readingLevel(),listening:listeningLevel()||"NOT ASSESSED (no audio available)",
+    writing:(d.w&&d.w.items||[]).map(x=>({task:x.prompt,words:wc(x.text),eval:x.eval||"not evaluated"})),
+    speaking:d.s&&d.s.eval?{eval:d.s.eval,answers:d.s.items.map(x=>({voice:!!x.voice,seconds:x.seconds,words:wc(x.text)}))}:"NOT ASSESSED",
+    professional:d.p&&d.p.eval?d.p.eval:"not evaluated"};
+  const r=await askJSON("You are an expert English examiner and instructional designer. "+LEARNER+"\nDiagnostic data:\n"+JSON.stringify(data)+"\n\nProduce the diagnostic report. Rules: do NOT assign a level to listening or speaking if they were not directly assessed (use null). Confidence must reflect amount of evidence (few items = low/medium). All text fields in Spanish. Return ONLY JSON: {\"levels\":{\"grammar\":{\"level\":\"B1\",\"confidence\":\"alta|media|baja\"},\"vocabulary\":{...},\"reading\":{...},\"writing\":{...},\"listening\":{\"level\":null|\"..\",\"confidence\":\"..\"},\"speaking\":{...}},\"global\":\"B1\",\"global_confidence\":\"media\",\"strengths\":[\"...\"],\"weaknesses\":[\"...\"],\"recurring_errors\":[\"...\"],\"priorities\":[\"... ordered\"],\"initial_plan\":\"4-6 sentences describing the first month\"}","complex");
+  return r;
+}
+function localSynth(){
+  const g=grammarLevel(),r=readingLevel(),l=listeningLevel();
+  const lv={grammar:{level:g&&g.level,confidence:"media"},vocabulary:{level:g&&g.level,confidence:"baja"},reading:{level:r&&r.level,confidence:"baja"},listening:{level:l?l.level:null,confidence:l?"baja":"sin evaluar"},writing:{level:null,confidence:"sin evaluar"},speaking:{level:null,confidence:"sin evaluar"}};
+  const ws=S.diag.w&&S.diag.w.items.map(x=>x.eval&&x.eval.cefr).filter(Boolean); if(ws&&ws.length) lv.writing={level:ws[0],confidence:"media"};
+  if(S.diag.s&&S.diag.s.eval&&S.diag.s.eval.cefr) lv.speaking={level:S.diag.s.eval.cefr,confidence:"baja"};
+  const vals=Object.values(lv).map(x=>LEVELS.indexOf(x.level)).filter(i=>i>=0);
+  const glob=vals.length?LEVELS[Math.round(vals.reduce((a,b)=>a+b,0)/vals.length)]:"A2";
+  return {levels:lv,global:glob,global_confidence:"baja",strengths:[],weaknesses:[],recurring_errors:S.errors.slice(0,5).map(e=>e.correct),priorities:["Completar la evaluación de writing y speaking con IA"],initial_plan:"Plan provisional calculado sin IA. Agrega tu clave de Gemini en Ajustes para obtener el análisis completo.",local:true};
+}
+function dResult(c){
+  const d=S.diag;
+  if(!d.result){
+    c.innerHTML='<div class="empty"><span class="spin"></span> Preparando tu informe de diagnóstico…</div>';
+    (sample?synthesize():Promise.reject({message:"sin IA"})).catch(e=>{ if(sample) toast("No se pudo generar el informe con IA: se usó un cálculo local."); return localSynth(); })
+    .then(r=>{d.result=r;d.status="done";d.finishedAt=nowISO();S.results.push({date:nowISO(),type:"diagnostic",skill:"assessment",score:LEVELS.indexOf(r.global)/5*100,title:"Diagnóstico inicial · "+r.global});log("Diagnóstico completado: "+r.global);save();dResult(c);});
+    return;
+  }
+  const r=d.result;
+  c.innerHTML='<div class="row between"><div><span class="k">Nivel global provisional</span><div class="lvl" style="margin-top:6px">'+esc(r.global||"—")+'</div><span class="pill gray" style="margin-top:6px">Confianza: '+esc(r.global_confidence||"—")+'</span></div>'+
+   '<button class="btn pri big" id="mk">'+(S.course?"Ver mi ruta":"Crear mi programa de 6 meses")+'</button></div>'+
+   '<h3 style="margin:22px 0 10px">Nivel MCER por competencia</h3><table><tr><th>Competencia</th><th>Nivel</th><th>Confianza</th></tr>'+
+   SKILLS.map(([k,n])=>{const x=(r.levels||{})[k]||{};return '<tr><td>'+n+'</td><td><b>'+(x.level||'<span class="muted">Sin nivel (no evaluado directamente)</span>')+'</b></td><td>'+esc(x.confidence||"—")+'</td></tr>';}).join("")+'</table>'+
+   '<div class="grid g2" style="margin-top:18px">'+listBox("Fortalezas",r.strengths,"ok")+listBox("Debilidades",r.weaknesses,"bad")+listBox("Errores recurrentes",r.recurring_errors,"warn")+listBox("Prioridades de aprendizaje",r.priorities,"")+'</div>'+
+   '<h3 style="margin:18px 0 8px">Plan inicial</h3><p>'+esc(r.initial_plan||"")+'</p>';
+  $("#mk").onclick=()=>{ if(S.course) go("path"); else { go("path"); } };
+}
+function listBox(t,arr,cls){return '<div class="card" style="box-shadow:none"><h3>'+t+'</h3><ul class="small" style="margin:8px 0 0;padding-left:18px;display:grid;gap:4px">'+((arr||[]).map(x=>'<li>'+esc(x)+'</li>').join("")||'<li class="muted">—</li>')+'</ul></div>';}
+
+/* ============================================================
+   ERRORES Y VOCABULARIO
+   ============================================================ */
+function addError(e){
+  const key=norm(e.correct)+"|"+norm(e.wrong);
+  const ex=S.errors.find(x=>x.key===key);
+  if(ex){ex.count++;ex.last=nowISO();ex.resolved=false;ex.streak=0;return;}
+  S.errors.unshift(Object.assign({id:uid(),key,count:1,first:nowISO(),last:nowISO(),resolved:false,streak:0},e));
+  S.errors=S.errors.slice(0,300);
+}
+function addCard(term,meaning,example,source){
+  if(!term) return; const k=norm(term);
+  if(S.vocab.some(c=>norm(c.term)===k)) return;
+  S.vocab.push({id:uid(),term,meaning:meaning||"",example:example||"",source:source||"",ef:2.5,int:0,reps:0,lapses:0,due:today(),added:today()});
+}
+function srs(card,q){ // SM-2 simplificado; q: 0 otra vez, 3 difícil, 4 bien, 5 fácil
+  if(q<3){card.reps=0;card.int=1;card.lapses++;}
+  else{card.reps++;card.int=card.reps===1?1:card.reps===2?3:Math.round(card.int*card.ef*(q===3?0.8:q===5?1.3:1));}
+  card.ef=Math.max(1.3,card.ef+(0.1-(5-q)*(0.08+(5-q)*0.02)));
+  const d=new Date();d.setDate(d.getDate()+card.int);card.due=d.toISOString().slice(0,10);card.last=today();
+}
+const cardStatus=c=>c.reps===0?"nueva":c.int>=21?"dominada":"en aprendizaje";
+
+/* ============================================================
+   PROGRAMA (CURSO)
+   ============================================================ */
+async function generateCourse(){
+  const r=S.diag.result;
+  const res=await askJSON("You are an expert instructional designer for adult English learners (SLA, spaced repetition, retrieval practice). "+LEARNER+"\nDiagnostic report: "+JSON.stringify(r)+"\nDesign a 6-month adaptive program: exactly 6 modules (one per month), each with 3 units, each unit with 3 lessons; the LAST lesson of each module's last unit must be a module assessment (skill \"assessment\"). Prioritize the weaknesses. Cover speaking, listening, grammar, vocabulary, reading_writing, mixing professional and everyday/travel/social/cultural topics. Progress the CEFR target gradually from the current level. Lesson titles in English, short; objectives in Spanish (max 14 words). Return ONLY JSON: {\"title\":\"...\",\"summary_es\":\"2 sentences\",\"modules\":[{\"title\":\"...\",\"target\":\"B1+\",\"focus_es\":\"...\",\"units\":[{\"title\":\"...\",\"lessons\":[{\"title\":\"...\",\"skill\":\"speaking|listening|grammar|vocabulary|reading_writing|assessment\",\"objective\":\"...\"}]}]}]}","complex");
+  if(!res||!Array.isArray(res.modules)||!res.modules.length) throw {message:"Respuesta inválida"};
+  res.modules.forEach((m,mi)=>{m.id="m"+(mi+1);m.units=(m.units||[]).slice(0,4);m.units.forEach((u,ui)=>{u.id=m.id+"u"+(ui+1);u.lessons=(u.lessons||[]).slice(0,5);u.lessons.forEach((l,li)=>{l.id=u.id+"l"+(li+1);l.status="locked";l.attempts=0;l.best=null;});});});
+  res.modules[0].units[0].lessons[0].status="available";
+  res.generatedAt=nowISO(); res.basedOn=r.global;
+  return res;
+}
+function vPath(m){
+  if(S.diag.status!=="done"){m.innerHTML=header("My Learning Path","Tu ruta se crea a partir del diagnóstico.")+'<div class="card empty"><p style="margin-bottom:14px">Primero necesitas completar el test de diagnóstico.</p><button class="btn pri" id="d">'+(S.diag.status==="none"?"Comenzar diagnóstico":"Continuar diagnóstico")+'</button></div>';$("#d").onclick=()=>go("diagnostic");return;}
+  if(!S.course){
+    m.innerHTML=header("My Learning Path","Programa adaptativo de 6 meses según tu diagnóstico ("+esc(globalLevel()||"")+").")+'<div class="card empty" id="gc"><p style="margin-bottom:14px">Tu diagnóstico está listo. Ahora la IA diseña tu programa: 6 módulos, 18 unidades y 54 lecciones, priorizando tus debilidades.</p><button class="btn pri big" id="g">Generar mi programa</button></div>';
+    $("#g").onclick=async()=>{ if(!sample){toast("La generación del programa necesita la IA: agrega tu clave de Gemini en Ajustes.");return;}
+      $("#gc").innerHTML='<span class="spin"></span> Diseñando tu programa (puede tardar hasta un minuto)…';
+      try{S.course=await generateCourse();log("Programa creado");save();render();}catch(e){toast(e.message||"No se pudo generar.");render();}};
+    return;
+  }
+  const ls=allLessons(), done=ls.filter(x=>x.l.status==="done").length, cur=nextLesson();
+  m.innerHTML=header("My Learning Path",esc(S.course.title||"Programa de 6 meses")+' · '+done+' de '+ls.length+' lecciones completadas',
+   '<button class="btn pri" id="cont">'+ICON.play+' Continue Learning</button>')+
+   (S.course.summary_es?'<p class="muted" style="margin:-8px 0 16px">'+esc(S.course.summary_es)+'</p>':'')+
+   '<div class="row small" style="margin-bottom:14px;gap:16px"><span><span class="tag" style="background:var(--ok);color:#fff">✓</span> Completada</span><span><span class="tag" style="background:var(--brand-2);color:var(--brand)">●</span> Disponible</span><span><span class="tag" style="background:var(--warn);color:#fff">↻</span> Repasar (no alcanzó dominio)</span><span class="muted">Las lecciones se desbloquean al demostrar ≥ 80% de dominio.</span></div>'+
+   '<div class="path">'+S.course.modules.map((md,mi)=>{
+     const mls=md.units.flatMap(u=>u.lessons), mdone=mls.filter(l=>l.status==="done").length, isCur=cur&&cur.m===md, isDone=mdone===mls.length;
+     return '<details class="mod '+(isDone?"done":isCur?"cur":"")+'" '+(isCur?"open":"")+'><summary><div class="num">'+(isDone?"✓":mi+1)+'</div><div><b>Mes '+(mi+1)+' · '+esc(md.title)+'</b><div class="small muted">'+esc(md.focus_es||"")+' · meta '+esc(md.target||"")+'</div><div class="bar" style="margin-top:8px;max-width:340px"><i style="width:'+mdone/mls.length*100+'%"></i></div></div><span class="pill '+(isDone?"ok":isCur?"":"gray")+'">'+mdone+'/'+mls.length+'</span></summary>'+
+     md.units.map(u=>'<div class="unit"><h4>'+esc(u.title)+'</h4>'+u.lessons.map(l=>{
+       const cls=l.status==="done"?"done":l.status==="available"?"avail":l.status==="review"?"review":"locked";
+       return '<div class="les '+cls+'"><span class="ic">'+(l.status==="done"?"✓":l.status==="review"?"↻":"")+'</span><div>'+esc(l.title)+' <span class="tag">'+esc(SKILL_LABEL[l.skill]||l.skill)+'</span><div class="tiny muted">'+esc(l.objective||"")+(l.best!=null?' · mejor puntaje '+Math.round(l.best)+'%':'')+'</div></div>'+
+         (l.status!=="locked"?'<button class="btn" data-open="'+l.id+'">'+(l.status==="done"?"Repetir":S.current&&S.current.lessonId===l.id?"Continuar":"Empezar")+'</button>':'<span class="tiny muted">Bloqueada</span>')+'</div>';}).join("")+'</div>').join("")+'</details>';}).join("")+'</div>';
+  $("#cont").onclick=continueLearning;
+  m.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openLesson(b.dataset.open));
+}
+
+/* ============================================================
+   LECCIONES
+   ============================================================ */
+const LSTEPS=[["learn","Explicación"],["practice","Ejercicios"],["apply","Aplicación"],["final","Evaluación final"],["done","Resultado"]];
+const stepName=s=>(LSTEPS.find(x=>x[0]===s)||["",s])[1];
+function openLesson(id){
+  if(S.current&&S.current.lessonId===id){go("lesson");return;}
+  S.current={lessonId:id,step:"loading",answers:{},final:{},app:{},startedAt:nowISO()};save();go("lesson");
+}
+function recentContext(){
+  const lastRes=S.results.slice(-8).map(r=>({skill:r.skill,score:Math.round(r.score)}));
+  const errs=S.errors.filter(e=>!e.resolved).sort((a,b)=>b.count-a.count).slice(0,8).map(e=>({wrong:e.wrong,correct:e.correct,kind:e.kind,times:e.count}));
+  return {level:globalLevel(),levels:currentLevels(),recentScores:lastRes,recurringErrors:errs};
+}
+async function generateLesson(x){
+  const isListen=x.l.skill==="listening", isAssess=x.l.skill==="assessment";
+  const prev=S.course.modules[x.mi];
+  return askJSON("You are an expert English teacher for Spanish-speaking adults. "+LEARNER+"\nLearner context: "+JSON.stringify(recentContext())+
+  "\nModule: "+prev.title+" (target "+prev.target+"). Unit: "+x.u.title+".\nLesson: \""+x.l.title+"\" — skill: "+x.l.skill+" — objective: "+x.l.objective+
+  (isAssess?"\nThis is the MODULE ASSESSMENT: cover the module's units; harder items; no new explanation needed (short recap only).":"")+
+  "\nAdapt difficulty to the learner's level and recent scores; weave in their recurring errors when relevant. Use natural US English, real-life contexts (work and everyday life). Explanations in Spanish, examples in English."+
+  (isListen?" Include an \"audio\" object: a natural US-English monologue or dialogue of 90-150 words (plain text, no speaker labels) with 3 comprehension questions; the learner will only HEAR it.":"")+
+  "\nReturn ONLY JSON: {\"objective_es\":\"...\",\"explanation_es\":\"clear, max 120 words, may include short English structures\",\"examples\":[{\"en\":\"...\",\"es\":\"...\"}] (4-6),"+
+  (isListen?"\"audio\":{\"text\":\"...\",\"questions\":[{\"q\":\"...\",\"options\":[\"...\"],\"answer\":0,\"explanation_es\":\"...\"}]},":"")+
+  "\"exercises\":[ 6 items, mix of {\"type\":\"mc\",\"prompt\":\"...\",\"options\":[4],\"answer\":index,\"explanation_es\":\"why\"} and {\"type\":\"fill\",\"prompt\":\"sentence with ___\",\"answer\":\"exact word(s)\",\"accept\":[\"other valid answers\"],\"hint_es\":\"...\",\"explanation_es\":\"...\"} ],"+
+  "\"application\":{\"mode\":\"write|speak\",\"prompt_es\":\"realistic task, 60-120 words expected\"},"+
+  "\"final\":[ 4 NEW items, same formats, slightly harder, not repeating exercises ],"+
+  "\"vocab\":[{\"term\":\"...\",\"meaning_es\":\"...\",\"example\":\"...\"}] (4-6 useful words/expressions),"+
+  "\"next_tip_es\":\"one sentence\"}. Vary the correct answer index across mc items.","default");
+}
+function vLesson(m){
+  if(S.diag.status!=="done"){m.innerHTML=header("Interactive Lessons","")+'<div class="card empty">Completa primero el diagnóstico.<div style="margin-top:12px"><button class="btn pri" id="d">Ir al diagnóstico</button></div></div>';$("#d").onclick=()=>go("diagnostic");return;}
+  if(!S.current||!S.current.lessonId){
+    const n=S.course&&nextLesson();
+    m.innerHTML=header("Interactive Lessons","Elige una lección desde tu ruta o continúa con la siguiente.")+'<div class="card empty">'+(n?'<p style="margin-bottom:14px">Siguiente lección: <b>'+esc(n.l.title)+'</b></p><button class="btn pri big" id="st">'+ICON.play+' Empezar</button>':'<p>No hay una lección pendiente. Revisa tu ruta.</p><div style="margin-top:12px"><button class="btn" id="p">Ver ruta</button></div>')+'</div>';
+    if(n)$("#st").onclick=()=>openLesson(n.l.id); else $("#p").onclick=()=>go("path"); return;
+  }
+  const cur=S.current, x=lessonById(cur.lessonId);
+  if(!x){S.current=null;save();vLesson(m);return;}
+  m.innerHTML=header(x.l.title,'Mes '+(x.mi+1)+' · '+esc(x.u.title)+' · <span class="tag">'+esc(SKILL_LABEL[x.l.skill]||x.l.skill)+'</span>','<button class="btn ghost" id="ex">Salir (se guarda)</button>')+
+    (cur.step!=="loading"?'<div class="steps">'+LSTEPS.map((s,j)=>{const i=LSTEPS.findIndex(z=>z[0]===cur.step);return '<span class="'+(j<i?"done":j===i?"on":"")+'">'+s[1]+'</span>';}).join("")+'</div>':'')+'<div class="card" id="lc"></div>';
+  $("#ex").onclick=()=>go("path");
+  const c=$("#lc");
+  if(cur.step==="loading"||!cur.content){
+    c.innerHTML='<div class="empty"><span class="spin"></span> Preparando la lección adaptada a tu nivel…</div>';
+    if(!sample){c.innerHTML='<div class="empty">Las lecciones se generan con IA y no está disponible en esta vista. Agrega tu clave de Gemini en Ajustes.</div>';return;}
+    generateLesson(x).then(content=>{ if(!S.current||S.current.lessonId!==x.l.id)return; S.current.content=content;S.current.step="learn";x.l.attempts=(x.l.attempts||0)+1;(content.vocab||[]).forEach(v=>addCard(v.term,v.meaning_es,v.example,x.l.title));save();render();})
+      .catch(e=>{c.innerHTML='<div class="empty"><p>'+esc(e.message||"Error")+'</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn pri" id="rt">Reintentar</button></div></div>';$("#rt").onclick=()=>{render();};});
+    return;
+  }
+  ({learn:lLearn,practice:lPractice,apply:lApply,final:lFinal,done:lDone}[cur.step]||lLearn)(c,x);
+}
+function lStep(s){S.current.step=s;save();render();}
+function lLearn(c,x){
+  const C=S.current.content;
+  c.innerHTML='<span class="k">Objetivo</span><p style="margin:6px 0 16px;font-weight:600">'+esc(C.objective_es||x.l.objective)+'</p>'+
+   '<div class="reading" style="white-space:pre-line">'+esc(C.explanation_es||"")+'</div>'+
+   '<h3 style="margin:6px 0 10px">Ejemplos naturales</h3><div style="display:grid;gap:8px">'+(C.examples||[]).map((e,i)=>'<div class="row" style="gap:10px;align-items:flex-start"><button class="btn ghost" data-say="'+i+'" title="Escuchar" '+(tts?"":"hidden")+'>'+ICON.speaker+'</button><div><b>'+esc(e.en)+'</b><div class="small muted">'+esc(e.es)+'</div></div></div>').join("")+'</div>'+
+   '<div class="row" style="margin-top:20px"><button class="btn pri" id="nx">Ir a los ejercicios</button></div>';
+  c.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak(C.examples[+b.dataset.say].en).catch(()=>{}));
+  $("#nx").onclick=()=>lStep("practice");
+}
+function itemsUI(c,items,store,prefix,onDone,doneLabel){
+  // store: {i: {given, ok}} ; muestra los ítems de a uno y guarda cada respuesta
+  const idx=items.findIndex((_,i)=>!store[i]);
+  if(idx<0){onDone();return;}
+  const it=items[idx];
+  let body='<div class="row between"><span class="k">'+prefix+' '+(idx+1)+' de '+items.length+'</span><div class="bar" style="width:160px"><i style="width:'+idx/items.length*100+'%"></i></div></div><p class="q">'+esc(it.prompt||it.q)+'</p>';
+  if(it.type==="fill"){body+='<input type="text" id="fi" autocomplete="off" placeholder="Tu respuesta">'+(it.hint_es?'<p class="tiny muted" style="margin-top:6px">Pista: '+esc(it.hint_es)+'</p>':'')+'<div class="row" style="margin-top:12px"><button class="btn pri" id="ck">Comprobar</button></div>';}
+  else{const opts=it.options||it.o||[];body+='<div class="opts">'+opts.map((o,i)=>'<button class="opt" data-i="'+i+'"><b>'+LETTERS[i]+'.</b> '+esc(o)+'</button>').join("")+'</div><div id="vh"></div>';}
+  body+='<div id="fb"></div>';
+  c.innerHTML=body;
+  if(it.type!=="fill") voiceAnswer(c.querySelector("#vh"),c.querySelectorAll(".opt"),it.options||it.o||[]);
+  else if(dict){ c.querySelector("#ck").insertAdjacentHTML("afterend",'<button class="btn" id="fmic">'+ICON.mic+' Hablar</button>'); }
+  const finish=(given,ok)=>{
+    if(dictState.on) stopDictation(); const vh=c.querySelector("#vh"); if(vh) vh.querySelectorAll("button").forEach(b=>b.disabled=true);
+    store[idx]={given,ok}; const correct=it.type==="fill"?it.answer:(it.options||it.o)[it.answer];
+    if(!ok) addError({skill:S.current&&lessonById(S.current.lessonId)?lessonById(S.current.lessonId).l.skill:"grammar",kind:"grammar",prompt:it.prompt||it.q,wrong:given,correct,explanation:it.explanation_es||""});
+    save();
+    $("#fb").innerHTML='<div class="fb '+(ok?"ok":"bad")+'"><b>'+(ok?"¡Correcto!":"No exactamente.")+'</b> '+(ok?"":'Respuesta: <b>'+esc(correct)+'</b>. ')+esc(it.explanation_es||"")+'</div><div class="row" style="margin-top:12px"><button class="btn pri" id="nx">'+(idx+1<items.length?"Siguiente":doneLabel)+'</button></div>';
+    $("#nx").onclick=()=>itemsUI(c,items,store,prefix,onDone,doneLabel); $("#nx").focus();
+  };
+  if(it.type==="fill"){const fi=$("#fi");fi.focus();const ck=()=>{const v=fi.value.trim();if(!v)return;const acc=[it.answer].concat(it.accept||[]).map(norm);fi.disabled=true;$("#ck").remove();finish(v,acc.includes(norm(v)));};$("#ck").onclick=ck;fi.onkeydown=e=>{if(e.key==="Enter")ck();};
+    if($("#fmic")){const ta=document.createElement("textarea");ta.hidden=true;c.appendChild(ta);$("#fmic").onclick=()=>{ta.value="";startDictation(ta,$("#fmic"));};ta.addEventListener("input",()=>{if(dictState.on||ta.dataset.voice!=="1")return;ta.dataset.voice="";fi.value=ta.value.trim().replace(/[.?!]$/,"");fi.focus();});}}
+  else c.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const ch=+b.dataset.i,ok=ch===it.answer;c.querySelectorAll(".opt").forEach(z=>{z.disabled=true;if(+z.dataset.i===it.answer)z.classList.add("right");});if(!ok)b.classList.add("wrong");finish((it.options||it.o)[ch],ok);});
+}
+function lPractice(c,x){
+  const C=S.current.content, cur=S.current;
+  if(C.audio&&!cur.audioDone){
+    const plays=cur.audioPlays||0;
+    if(!tts){ c.innerHTML='<h3>Audio de la lección</h3><p class="muted" style="margin:10px 0">El audio no está disponible en este navegador/app. Puedes leer la transcripción como práctica (no cuenta como listening).</p><div class="reading">'+esc(C.audio.text)+'</div><div class="row"><button class="btn pri" id="nx">Continuar</button></div>';$("#nx").onclick=()=>{cur.audioDone=true;cur.audioSkipped=true;save();lPractice(c,x);};return; }
+    if(!cur.audioAns)cur.audioAns={};
+    if(!plays){c.innerHTML='<h3>Escucha</h3><p class="muted small" style="margin:8px 0 14px">Escucha el audio (hasta 3 veces) y responde. La transcripción aparece al final.</p><button class="btn pri" id="pl">'+ICON.speaker+' Escuchar</button>';}
+    else c.innerHTML='<div class="row" style="margin-bottom:14px"><button class="btn" id="pl" '+(plays>=3?"disabled":"")+'>'+ICON.speaker+' Escuchar de nuevo ('+plays+'/3)</button></div><div id="aq"></div>';
+    $("#pl").onclick=async()=>{if(dictState.on) await stopDictation();const b=$("#pl");b.disabled=true;cur.audioPlays=(cur.audioPlays||0)+1;save();try{await speak(C.audio.text);}catch(e){}lPractice(c,x);};
+    if(plays){const aq=document.createElement("div");$("#aq").appendChild(aq);itemsUI(aq,C.audio.questions.map(q=>Object.assign({type:"mc",prompt:q.q},q)),cur.audioAns,"Pregunta de audio",()=>{cur.audioQDone=true;save();audioSummary(c,x);},"Continuar");}
+    if(cur.audioQDone){audioSummary(c,x);}
+    return;
+  }
+  itemsUI(c,C.exercises||[],cur.answers,"Ejercicio",()=>lStep("apply"),"Ir a la aplicación práctica");
+}
+function audioSummary(c,x){
+  const cur=S.current, C=cur.content; if(!cur.audioSum) cur.audioSum={};
+  const st=cur.audioSum;
+  const showTranscript=()=>{cur.audioDone=true;save();
+    c.innerHTML=(st.eval?'<h3>Tu resumen</h3>'+evalCard(st.eval):'')+'<div class="fb info" style="margin-top:16px"><b>Transcripción:</b> '+esc(C.audio.text)+'</div><div class="row" style="margin-top:14px"><button class="btn pri" id="nx">Continuar con los ejercicios</button></div>';
+    $("#nx").onclick=()=>lPractice(c,x);};
+  if(st.done){showTranscript();return;}
+  textTask(c,{kicker:"Listening + speaking",title:"Cuenta lo que escuchaste",prompt:"Resume en voz alta, en inglés, lo que escuchaste en el audio (30–45 segundos): quién habla, qué pasa y cuál es la idea principal.",store:st,skill:"speaking",voice:true,speaking:true,skippable:true,
+    evaluate:s=>askJSON("You are an English listening and speaking coach. "+LEARNER+"\nThe learner HEARD this audio (never saw the text):\n\"\"\""+C.audio.text+"\"\"\"\nThen they summarized it "+(s.voice?"by speaking (speech-recognition transcript, "+(s.seconds||"?")+" s)":"in writing")+":\n\"\"\""+s.text+"\"\"\"\nEvaluate (1) listening comprehension: which key ideas were understood, missed or misunderstood; (2) the English of the summary. Do not score pronunciation. In summary_es, first say how much of the audio they understood. "+EVAL_SCHEMA.replace('"scores":{"accuracy":0-100,"vocabulary":0-100,"cohesion":0-100,"naturalness":0-100,"clarity":0-100}','"scores":{"comprehension":0-100,"accuracy":0-100,"vocabulary":0-100,"fluency":0-100}')),
+    next:()=>{st.done=true;save();showTranscript();}});
+  const sk=$("#skp"); if(sk) sk.onclick=()=>{st.done=true;st.skipped=true;save();showTranscript();};
+}
+function lApply(c,x){
+  const C=S.current.content, st=S.current.app, A=C.application||{mode:"write",prompt_es:"Escribe un párrafo aplicando lo aprendido."};
+  st.prompt=A.prompt_es;
+  textTask(c,{kicker:"Aplicación práctica",title:A.mode==="speak"?"Responde hablando":"Escribe",prompt:A.prompt_es,store:st,skill:x.l.skill==="speaking"?"speaking":"writing",voice:true,speaking:A.mode==="speak",
+    evaluate:s=>evalWriting("Lesson: "+x.l.title+" ("+(C.objective_es||"")+"). Task: "+A.prompt_es+(s.voice?" (spoken answer, transcript)":"")+" Evaluate mainly whether the lesson target is used correctly.",s.text),
+    next:()=>lStep("final")});
+}
+function lFinal(c,x){itemsUI(c,S.current.content.final||[],S.current.final,"Evaluación final",()=>lStep("done"),"Ver resultado");}
+function lessonScore(){
+  const cur=S.current, a=Object.values(cur.answers||{}), f=Object.values(cur.final||{}), au=Object.values(cur.audioAns||{});
+  if(cur.audioSum&&cur.audioSum.eval&&cur.audioSum.eval.scores&&!cur.audioSum.logged){cur.audioSum.logged=true;const sc=cur.audioSum.eval.scores;S.results.push({date:nowISO(),type:"lesson-part",skill:"listening",score:sc.comprehension!=null?sc.comprehension:Object.values(sc)[0],title:"Resumen oral del audio"});}
+  const items=a.concat(f,au); const acc=items.length?items.filter(z=>z.ok).length/items.length*100:0;
+  const finalAcc=f.length?f.filter(z=>z.ok).length/f.length*100:acc;
+  const ev=cur.app&&cur.app.eval; const appSc=ev&&ev.scores?Object.values(ev.scores).reduce((s,v)=>s+v,0)/Object.values(ev.scores).length:null;
+  const score=appSc==null?acc:acc*0.8+appSc*0.2;
+  const passed=acc>=80&&finalAcc>=75&&(appSc==null||appSc>=60);
+  return {score,acc,finalAcc,appSc,passed};
+}
+function lDone(c,x){
+  const cur=S.current, C=cur.content, r=lessonScore();
+  if(!cur.recorded){
+    cur.recorded=true;
+    S.results.push({date:nowISO(),type:"lesson",id:x.l.id,skill:x.l.skill==="assessment"?"assessment":x.l.skill,score:r.score,passed:r.passed,title:x.l.title,module:x.m.id});
+    x.l.best=Math.max(x.l.best||0,r.score);
+    if(r.passed){ x.l.status="done"; const ls=allLessons(); const i=ls.findIndex(z=>z.l.id===x.l.id); const nx=ls.slice(i+1).find(z=>z.l.status==="locked"); if(nx) nx.l.status="available"; log("Lección aprobada: "+x.l.title); }
+    else if(x.l.status!=="done"){ x.l.status="review"; log("Lección por repasar: "+x.l.title); }
+    save();
+  }
+  const nx=nextLesson();
+  c.innerHTML='<div class="row between"><div><span class="k">Resultado</span><div class="lvl" style="margin-top:6px;color:'+(r.passed?"var(--ok)":"var(--warn)")+'">'+Math.round(r.score)+'%</div></div><span class="pill '+(r.passed?"ok":"warn")+'" style="font-size:14px">'+(r.passed?"Dominio demostrado ✓":"Aún no alcanzas el dominio")+'</span></div>'+
+   '<div class="grid g3" style="margin-top:16px">'+stat("Ejercicios + evaluación",Math.round(r.acc)+"%","Mínimo 80%")+stat("Evaluación final",Math.round(r.finalAcc)+"%","Mínimo 75%")+stat("Aplicación práctica",r.appSc==null?"—":Math.round(r.appSc)+"%",r.appSc==null?"Sin evaluar":"Mínimo 60%")+'</div>'+
+   '<div class="fb '+(r.passed?"ok":"bad")+'" style="margin-top:16px">'+(r.passed?'Lección aprobada. Se desbloqueó la siguiente.':'Para avanzar necesitas demostrar dominio. Repite la lección: la IA generará ejercicios nuevos. Tus errores ya están en el Review Center.')+'</div>'+
+   '<h3 style="margin:18px 0 6px">Recomendación para la próxima sesión</h3><p>'+esc(C.next_tip_es||"Repasa tus tarjetas de vocabulario antes de la siguiente lección.")+'</p>'+
+   ((C.vocab||[]).length?'<p class="small muted" style="margin-top:10px">Se agregaron '+C.vocab.length+' expresiones a tu Vocabulary Trainer.</p>':'')+
+   '<div class="row" style="margin-top:20px">'+(r.passed?'':'<button class="btn pri" id="rp">Repetir con ejercicios nuevos</button>')+(nx&&r.passed?'<button class="btn pri" id="nl">'+ICON.play+' Siguiente: '+esc(nx.l.title)+'</button>':'')+'<button class="btn" id="pt">Ver mi ruta</button></div>';
+  if($("#rp")) $("#rp").onclick=()=>{S.current={lessonId:x.l.id,step:"loading",answers:{},final:{},app:{},startedAt:nowISO()};save();render();};
+  if($("#nl")) $("#nl").onclick=()=>{S.current=null;openLesson(nx.l.id);};
+  $("#pt").onclick=()=>{S.current=null;save();go("path");};
+}
+
+/* ============================================================
+   SPEAKING LAB
+   ============================================================ */
+const SCEN=[
+ {id:"boss",t:"Reunión con tu jefe",d:"Tu jefe (Mark) quiere un update sobre un proyecto con retraso.",role:"You are Mark, the learner's American boss. You are friendly but direct. Start by asking for an update on the delayed logistics project and probe for causes, impact and next steps."},
+ {id:"nego",t:"Negociación comercial",d:"Un proveedor (Jessica) propone subir precios 12%.",role:"You are Jessica, sales manager at a US supplier. You want a 12% price increase due to costs. Negotiate realistically; concede only with good arguments."},
+ {id:"coll",t:"Colega estadounidense",d:"Small talk y trabajo con Ryan, de Chicago.",role:"You are Ryan, a colleague from Chicago, on a video call before a meeting. Make natural small talk (weekend, weather, sports, Chile) then move to a work topic."},
+ {id:"intv",t:"Entrevista de trabajo",d:"Entrevista para un rol regional en una empresa de EE.UU.",role:"You are a hiring manager at a US company interviewing the learner for a regional operations role. Ask typical behavioral questions one at a time."},
+ {id:"air",t:"Aeropuerto",d:"Perdiste tu conexión en Dallas y necesitas una solución.",role:"You are an airline agent at Dallas airport. The learner missed a connection. Be realistic about options (rebooking, hotel voucher, standby)."},
+ {id:"dinner",t:"Cena informal",d:"Cena con clientes en Nueva York: conversación social.",role:"You are Sarah, a client from New York, at a relaxed dinner. Chat about food, travel, culture, family, Chile vs the US. Ask follow-up questions."}
+];
+function vSpeaking(m){
+  const act=S.lab;
+  if(!act){
+    m.innerHTML=header("Speaking Lab","Conversaciones simuladas con IA. Habla (dictado) o escribe; las respuestas se pueden escuchar en voz alta. Las correcciones llegan al final para no interrumpirte.")+
+     (sample?'':'<div class="fb bad">Speaking Lab necesita la IA: agrega tu clave de Gemini en Ajustes.</div>')+
+     '<div class="grid g3">'+SCEN.map(s=>'<div class="card"><h3>'+esc(s.t)+'</h3><p class="small muted" style="margin:6px 0 14px">'+esc(s.d)+'</p><button class="btn pri" data-s="'+s.id+'" '+(sample?"":"disabled")+'>Empezar</button></div>').join("")+'</div>'+
+     (S.speaking.length?'<div class="card" style="margin-top:16px"><h3>Historial</h3><table style="margin-top:8px"><tr><th>Fecha</th><th>Escenario</th><th>Nivel estimado</th></tr>'+S.speaking.slice(-10).reverse().map(h=>'<tr><td>'+new Date(h.date).toLocaleDateString("es-CL")+'</td><td>'+esc(h.t)+'</td><td>'+esc(h.cefr||"—")+'</td></tr>').join("")+'</table></div>':'');
+    m.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{const s=SCEN.find(z=>z.id===b.dataset.s);S.lab={id:s.id,t:s.t,msgs:[],started:nowISO()};save();vSpeakingStart(m,s);});
+    return;
+  }
+  const s=SCEN.find(z=>z.id===act.id); if(!act.msgs.length){vSpeakingStart(m,s);return;} labUI(m,s);
+}
+function sysPrompt(s){return "Role-play for English speaking practice. "+s.role+" "+LEARNER+" Learner level: "+(globalLevel()||"B1")+". Speak natural US English adapted to that level (slightly above). Keep each turn to 1-3 sentences, ask one question at a time, keep the conversation going. Do NOT correct the learner during the conversation. Never break character. Reply with your line only.";}
+async function vSpeakingStart(m,s){
+  labUI(m,s,true);
+  try{const t=await askText([{role:"user",content:sysPrompt(s)+"\n\nStart the conversation now with your first line."}]);S.lab.msgs.push({r:"ai",t:t.trim()});save();labUI(m,s);sayIf(t);}
+  catch(e){toast(e.message||"Error");S.lab=null;save();vSpeaking(m);}
+}
+function sayIf(t){if(tts&&S.prefs.labVoice!==false) speak(t).catch(()=>{});}
+function labUI(m,s,loading){
+  const L=S.lab;
+  m.innerHTML=header(s.t,esc(s.d),'<div class="row"><button class="btn" id="fin">Terminar y recibir feedback</button><button class="btn ghost" id="ab">Salir</button></div>')+
+   '<div class="card"><div class="chat" id="chat">'+L.msgs.map(x=>'<div class="msg '+(x.r==="ai"?"ai":"me")+'">'+esc(x.t)+'</div>').join("")+(loading?'<div class="msg ai"><span class="spin"></span></div>':'')+'</div>'+
+   '<textarea id="ta" style="min-height:90px;margin-top:10px" placeholder="'+(dict?"Pulsa «Hablar» y responde en voz alta, o escribe…":"Escribe tu respuesta…")+'"></textarea>'+
+   '<div class="row" style="margin-top:10px">'+(dict?'<button class="btn" id="mic">'+ICON.mic+' Hablar</button>':'')+'<button class="btn pri" id="snd">Enviar</button>'+(tts?'<label class="small muted row" style="gap:6px;margin-left:auto"><input type="checkbox" id="vo" '+(S.prefs.labVoice!==false?"checked":"")+'> Escuchar respuestas</label>':'')+'</div></div>';
+  const ch=$("#chat");ch.scrollTop=ch.scrollHeight;
+  const ta=$("#ta");
+  if($("#mic"))$("#mic").onclick=()=>startDictation(ta,$("#mic"));
+  if($("#vo"))$("#vo").onchange=e=>{S.prefs.labVoice=e.target.checked;save();};
+  $("#ab").onclick=()=>{S.lab=null;save();vSpeaking(m);};
+  $("#snd").onclick=async()=>{ if(dictState.on) await stopDictation(); const t=ta.value.trim(); if(!t)return; stopSpeak();
+    L.msgs.push({r:"me",t,voice:ta.dataset.voice==="1"}); save(); labUI(m,s,true);
+    try{const msgs=[{role:"user",content:sysPrompt(s)+"\n\nStart the conversation now with your first line."}];L.msgs.forEach((x,i)=>{msgs.push({role:x.r==="ai"?"assistant":"user",content:x.t});});
+      const r=await askText(msgs); L.msgs.push({r:"ai",t:r.trim()}); save(); labUI(m,s); sayIf(r);}
+    catch(e){toast(e.message||"Error");labUI(m,s);} };
+  $("#fin").onclick=async()=>{ stopSpeak(); const mine=L.msgs.filter(x=>x.r==="me"); if(mine.length<2){toast("Conversa al menos 2 turnos antes del feedback.");return;}
+    m.querySelector(".card").innerHTML='<div class="empty"><span class="spin"></span> Analizando la conversación…</div>';
+    try{
+      const ev=await askJSON("You are an English speaking coach. "+LEARNER+"\nScenario: "+s.t+".\nConversation (AI = partner, LEARNER = learner"+(mine.some(x=>x.voice)?"; learner turns marked [spoken] were dictated, transcribed by speech recognition":"")+"):\n"+L.msgs.map(x=>(x.r==="ai"?"AI: ":"LEARNER"+(x.voice?" [spoken]":" [typed]")+": ")+x.t).join("\n")+
+        "\nGive post-conversation feedback. You cannot hear audio: do not score pronunciation. Return ONLY JSON: {\"cefr\":\"A1..C2\",\"scores\":{\"fluency\":0-100,\"grammar\":0-100,\"vocabulary\":0-100,\"communication\":0-100},\"summary_es\":\"...\",\"strengths_es\":[\"...\"],\"corrections\":[{\"original\":\"...\",\"corrected\":\"...\",\"type\":\"grammar|naturalness|vocabulary\",\"explanation_es\":\"...\"}],\"better_expressions\":[{\"expression\":\"...\",\"meaning_es\":\"...\",\"example\":\"...\"}],\"pronunciation_note_es\":\"...\"}");
+      absorbEval(ev,"speaking","Speaking Lab: "+s.t);
+      const sc=ev.scores?Object.values(ev.scores).reduce((a,b)=>a+b,0)/Object.values(ev.scores).length:0;
+      S.results.push({date:nowISO(),type:"speaking",skill:"speaking",score:sc,title:"Speaking Lab: "+s.t});
+      S.speaking.push({date:nowISO(),id:s.id,t:s.t,cefr:ev.cefr,score:sc,turns:mine.length});
+      S.lab=null; save();
+      m.innerHTML=header("Feedback: "+s.t,"Correcciones posteriores a la conversación")+'<div class="card">'+evalCard(ev)+'<div class="row" style="margin-top:18px"><button class="btn pri" id="bk">Volver al Speaking Lab</button></div></div>';
+      $("#bk").onclick=()=>vSpeaking(m);
+    }catch(e){toast(e.message||"Error");labUI(m,s);}
+  };
+}
+
+/* ============================================================
+   VOCABULARY TRAINER
+   ============================================================ */
+function vVocab(m){
+  const due=S.vocab.filter(c=>c.due<=today()).sort((a,b)=>a.lapses===b.lapses?a.due.localeCompare(b.due):b.lapses-a.lapses);
+  const counts={nueva:0,"en aprendizaje":0,dominada:0}; S.vocab.forEach(c=>counts[cardStatus(c)]++);
+  m.innerHTML=header("Vocabulary Trainer","Repetición espaciada: las palabras que aún no dominas vuelven antes. Se agregan solas desde tus lecciones y correcciones.")+
+   '<div class="grid g4 keep" style="margin-bottom:16px">'+stat("Para hoy",due.length,"tarjetas")+stat("Nuevas",counts.nueva,"")+stat("En aprendizaje",counts["en aprendizaje"],"")+stat("Dominadas",counts.dominada,"intervalo ≥ 21 días")+'</div>'+
+   '<div class="card" id="vc"></div>'+
+   '<div class="card" style="margin-top:16px"><h3>Agregar una expresión</h3><div class="grid g3" style="margin-top:10px"><input type="text" id="nt" placeholder="Expresión en inglés"><input type="text" id="nm" placeholder="Significado en español"><input type="text" id="ne" placeholder="Ejemplo (opcional)"></div><div class="row" style="margin-top:10px"><button class="btn" id="add">Agregar</button></div></div>'+
+   (S.vocab.length?'<div class="card" style="margin-top:16px"><h3>Todas tus tarjetas ('+S.vocab.length+')</h3><table style="margin-top:8px"><tr><th>Expresión</th><th>Significado</th><th>Estado</th><th>Próximo repaso</th></tr>'+S.vocab.slice().sort((a,b)=>a.due.localeCompare(b.due)).slice(0,200).map(c=>'<tr><td><b>'+esc(c.term)+'</b></td><td>'+esc(c.meaning)+'</td><td><span class="pill '+(cardStatus(c)==="dominada"?"ok":cardStatus(c)==="nueva"?"gray":"")+'">'+cardStatus(c)+'</span></td><td>'+c.due+'</td></tr>').join("")+'</table></div>':'');
+  $("#add").onclick=()=>{const t=$("#nt").value.trim();if(!t)return;addCard(t,$("#nm").value.trim(),$("#ne").value.trim(),"manual");save();vVocab(m);toast("Tarjeta agregada");};
+  const vc=$("#vc");
+  if(!due.length){vc.innerHTML='<div class="empty">'+(S.vocab.length?"No tienes tarjetas pendientes hoy. ¡Bien hecho!":"Aún no hay tarjetas. Aparecerán al completar lecciones y correcciones.")+'</div>';return;}
+  let i=0, flipped=false;
+  const show=()=>{const c=due[i]; if(!c){vc.innerHTML='<div class="empty">Sesión terminada: repasaste '+due.length+' tarjetas.</div>';return;}
+    vc.innerHTML='<div class="row between"><span class="k">Tarjeta '+(i+1)+' de '+due.length+'</span>'+(tts?'<button class="btn ghost" id="say">'+ICON.speaker+' Escuchar</button>':'')+'</div><div class="flash"><div class="face"><div><div class="term">'+esc(c.term)+'</div>'+(flipped?'<p style="margin-top:14px;font-size:17px">'+esc(c.meaning)+'</p>'+(c.example?'<p class="muted small" style="margin-top:8px"><i>'+esc(c.example)+'</i></p>':''):'<p class="muted small" style="margin-top:14px">¿Recuerdas qué significa y cómo usarla?</p>')+'</div></div></div>'+
+    '<div class="row" style="justify-content:center;margin-top:8px">'+(flipped?[[0,"Otra vez","bad"],[3,"Difícil",""],[4,"Bien",""],[5,"Fácil","ok"]].map(g=>'<button class="btn '+(g[2]==="ok"?"ok":"")+'" data-q="'+g[0]+'">'+g[1]+'</button>').join(""):'<button class="btn pri" id="fl">Mostrar respuesta</button>')+'</div>';
+    if($("#say"))$("#say").onclick=()=>speak(c.term+(c.example?". "+c.example:"")).catch(()=>{});
+    if($("#fl"))$("#fl").onclick=()=>{flipped=true;show();};
+    vc.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{srs(c,+b.dataset.q);S.results.push({date:nowISO(),type:"vocab",skill:"vocabulary",score:+b.dataset.q>=4?100:+b.dataset.q===3?70:0,title:"Repaso: "+c.term});if(S.results.length>1500)S.results=S.results.filter(r=>r.type!=="vocab").concat(S.results.filter(r=>r.type==="vocab").slice(-600));save();i++;flipped=false;show();});
+  };
+  show();
+}
+
+/* ============================================================
+   REVIEW CENTER
+   ============================================================ */
+function vReview(m){
+  const open=S.errors.filter(e=>!e.resolved).sort((a,b)=>b.count-a.count||b.last.localeCompare(a.last));
+  const byKind={grammar:0,naturalness:0,vocab:0};open.forEach(e=>byKind[e.kind]=(byKind[e.kind]||0)+1);
+  m.innerHTML=header("Review Center","Tus errores más frecuentes, reunidos automáticamente. Corrige cada uno 2 veces seguidas para darlo por superado.")+
+   '<div class="grid g3" style="margin-bottom:16px">'+stat("Errores gramaticales",byKind.grammar,"pendientes")+stat("Expresiones poco naturales",byKind.naturalness,"pendientes")+stat("Vocabulario / comprensión",byKind.vocab,"pendientes")+'</div>'+
+   '<div class="card" id="rc"></div>'+
+   '<div class="card" style="margin-top:16px"><h3>Errores registrados</h3>'+(open.length?'<table style="margin-top:8px"><tr><th>Tipo</th><th>Lo que pusiste</th><th>Forma correcta</th><th>Veces</th></tr>'+open.slice(0,40).map(e=>'<tr><td><span class="tag '+(e.kind==="grammar"?"g":e.kind==="naturalness"?"n":"v")+'">'+(e.kind==="grammar"?"Gramática":e.kind==="naturalness"?"Natural":"Vocab")+'</span></td><td class="small">'+esc(e.wrong)+'</td><td class="small"><b>'+esc(e.correct)+'</b><div class="tiny muted">'+esc(e.explanation||"")+'</div></td><td>'+e.count+'</td></tr>').join("")+'</table>':'<p class="muted small" style="margin-top:8px">Sin errores pendientes.</p>')+'</div>';
+  const rc=$("#rc");
+  if(!open.length){rc.innerHTML='<div class="empty">No tienes errores pendientes. Sigue con tus lecciones.</div>';return;}
+  rc.innerHTML='<h3>Práctica dirigida</h3><p class="small muted" style="margin:6px 0 14px">Elige el tipo de práctica.</p><div class="row"><button class="btn pri" id="fx">Corregir mis propias frases ('+Math.min(8,open.length)+')</button>'+(sample?'<button class="btn" id="gn">Ejercicios nuevos con IA sobre estos errores</button>':'')+'</div>';
+  $("#fx").onclick=()=>fixDrill(rc,open.slice(0,8),0,0);
+  if($("#gn"))$("#gn").onclick=async()=>{rc.innerHTML='<div class="empty"><span class="spin"></span> Creando ejercicios dirigidos…</div>';
+    try{const r=await askJSON("You are an English teacher. "+LEARNER+"\nThe learner's recurring errors: "+JSON.stringify(open.slice(0,8).map(e=>({wrong:e.wrong,correct:e.correct,kind:e.kind,why:e.explanation})))+"\nCreate 8 NEW targeted exercises (new sentences, same underlying problems). Return ONLY JSON: {\"items\":[{\"type\":\"mc\",\"prompt\":\"...\",\"options\":[4],\"answer\":idx,\"explanation_es\":\"...\"} or {\"type\":\"fill\",\"prompt\":\"... ___ ...\",\"answer\":\"...\",\"accept\":[],\"explanation_es\":\"...\"}]}");
+      const store={}; itemsUI(rc,r.items||[],store,"Ejercicio de repaso",()=>{const v=Object.values(store),sc=v.filter(z=>z.ok).length/(v.length||1)*100;S.results.push({date:nowISO(),type:"review",skill:"grammar",score:sc,title:"Repaso dirigido"});save();rc.innerHTML='<div class="empty"><div class="lvl">'+Math.round(sc)+'%</div><p style="margin-top:8px">Repaso terminado.</p></div>';},"Terminar");}
+    catch(e){toast(e.message||"Error");vReview(m);}};
+}
+function fixDrill(rc,list,i,okN){
+  const e=list[i];
+  if(!e){S.results.push({date:nowISO(),type:"review",skill:"grammar",score:okN/list.length*100,title:"Corrección de errores"});save();rc.innerHTML='<div class="empty"><div class="lvl">'+okN+'/'+list.length+'</div><p style="margin-top:8px">Corregiste '+okN+' de '+list.length+'.</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn pri" id="bk">Volver</button></div></div>';$("#bk").onclick=()=>render();return;}
+  const isQ=!/^Corrige:/.test(e.prompt||"");
+  rc.innerHTML='<div class="row between"><span class="k">Error '+(i+1)+' de '+list.length+' · cometido '+e.count+' '+(e.count>1?"veces":"vez")+'</span></div>'+
+   (isQ?'<p class="q">'+esc(e.prompt)+'</p><p class="small muted">Escribe la respuesta correcta.</p>':'<p class="small muted" style="margin-top:8px">Reescribe esta frase de forma correcta y natural:</p><p class="q">'+esc(e.wrong)+'</p>')+
+   '<input type="text" id="fi" autocomplete="off"><div class="row" style="margin-top:12px"><button class="btn pri" id="ck">Comprobar</button></div><div id="fb"></div>';
+  const fi=$("#fi");fi.focus();
+  const ck=()=>{const v=fi.value.trim();if(!v)return;const ok=norm(v)===norm(e.correct);fi.disabled=true;$("#ck").remove();
+    const done=ok2=>{ if(ok2){e.streak=(e.streak||0)+1;if(e.streak>=2)e.resolved=true;} else {e.streak=0;} save(); };
+    $("#fb").innerHTML='<div class="fb '+(ok?"ok":"bad")+'"><b>'+(ok?"¡Correcto!":"Forma recomendada:")+'</b> '+esc(e.correct)+'<div class="small" style="margin-top:4px">'+esc(e.explanation||"")+'</div></div><div class="row" style="margin-top:12px">'+(ok?'':'<button class="btn" id="mine">Mi respuesta también era correcta</button>')+'<button class="btn pri" id="nx">Siguiente</button></div>';
+    let counted=ok; done(ok);
+    if($("#mine"))$("#mine").onclick=()=>{e.streak=(e.streak||0)+1;if(e.streak>=2)e.resolved=true;counted=true;save();$("#mine").remove();};
+    $("#nx").onclick=()=>fixDrill(rc,list,i+1,okN+(counted?1:0));};
+  $("#ck").onclick=ck; fi.onkeydown=ev=>{if(ev.key==="Enter")ck();};
+}
+
+/* ============================================================
+   PROGRESS ANALYTICS
+   ============================================================ */
+function vAnalytics(m){
+  const colors={grammar:"#3b5bdb",vocabulary:"#22b8cf",reading_writing:"#12a36b",writing:"#12a36b",listening:"#e8890c",speaking:"#d6334a",assessment:"#7048e8"};
+  const rs=S.results.filter(r=>r.type!=="vocab"&&r.type!=="diagnostic");
+  // evolución por competencia (por semana)
+  const weeks=[...new Set(rs.map(r=>weekStart(r.date)))].sort().slice(-12);
+  const skills=["grammar","vocabulary","reading_writing","listening","speaking","assessment"].filter(k=>rs.some(r=>r.skill===k));
+  const series=skills.map(k=>({name:SKILL_LABEL[k],color:colors[k],pts:weeks.map(w=>{const xs=rs.filter(r=>r.skill===k&&weekStart(r.date)===w);return xs.length?xs.reduce((a,r)=>a+r.score,0)/xs.length:null;})}));
+  // minutos por día (14 días)
+  const days=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.toISOString().slice(0,10));}
+  // dominio por módulo
+  const mods=S.course?S.course.modules.map((md,i)=>{const ls=md.units.flatMap(u=>u.lessons);return {k:"Mes "+(i+1)+": "+md.title,v:ls.filter(l=>l.status==="done").length/ls.length*100};}):[];
+  // errores frecuentes
+  const errs=S.errors.slice().sort((a,b)=>b.count-a.count).slice(0,8).map(e=>({k:e.correct,v:e.count,c:e.resolved?"#9aa3b8":"#d6334a"}));
+  // vocabulario
+  const vc={nueva:0,"en aprendizaje":0,dominada:0};S.vocab.forEach(c=>vc[cardStatus(c)]++);
+  const tests=S.results.filter(r=>r.type==="diagnostic"||r.skill==="assessment"||r.type==="speaking").slice(-15).reverse();
+  m.innerHTML=header("Progress Analytics","Tu evolución con datos reales registrados en la app.")+
+   '<div class="grid g2"><div class="card"><h3>Evolución por competencia (promedio semanal)</h3>'+(weeks.length>=2?lineChart(series,weeks.map(w=>w.slice(5)),100):'<p class="muted small" style="margin-top:10px">Se necesitan al menos 2 semanas con actividad.'+(weeks.length?' Esta semana: '+series.map(s=>s.name+" "+Math.round(s.pts[0]||0)+"%").join(", "):'')+'</p>')+'</div>'+
+   '<div class="card"><h3>Tiempo de estudio (últimos 14 días)</h3>'+barChart(days.map(d=>({k:new Date(d+"T12:00:00").toLocaleDateString("es-CL",{weekday:"short",day:"numeric"}),v:S.time.byDay[d]||0})),Math.max(30,...days.map(d=>S.time.byDay[d]||0))," min","#22b8cf")+'</div>'+
+   '<div class="card"><h3>Porcentaje de dominio por módulo</h3>'+barChart(mods,100,"%","#12a36b")+'</div>'+
+   '<div class="card"><h3>Errores más frecuentes</h3>'+barChart(errs,Math.max(1,...errs.map(e=>e.v)),"×")+'<p class="tiny muted">En gris: ya superados.</p></div>'+
+   '<div class="card"><h3>Vocabulario</h3>'+barChart([{k:"Dominadas",v:vc.dominada,c:"#12a36b"},{k:"En aprendizaje",v:vc["en aprendizaje"],c:"#3b5bdb"},{k:"Nuevas",v:vc.nueva,c:"#9aa3b8"}],Math.max(1,S.vocab.length))+'</div>'+
+   '<div class="card"><h3>Resultados de evaluaciones</h3>'+(tests.length?'<table style="margin-top:8px"><tr><th>Evaluación</th><th>Resultado</th></tr>'+tests.map(r=>'<tr><td>'+esc(r.title)+'<div class="tiny muted">'+new Date(r.date).toLocaleDateString("es-CL")+'</div></td><td><b>'+(r.type==="diagnostic"?esc((r.title.split("·")[1]||"").trim()):Math.round(r.score)+"%")+'</b></td></tr>').join("")+'</table>':'<p class="muted small">Sin evaluaciones aún.</p>')+'</div></div>';
+}
+
+/* ============================================================
+   AJUSTES Y RESPALDO
+   ============================================================ */
+function vSettings(m){
+  m.innerHTML=header("Ajustes y respaldo","")+
+   '<div class="grid g2">'+EC.keyCard()+'<div class="card"><h3>Dónde se guarda tu progreso</h3><p class="small" style="margin-top:8px">'+
+   (persistMode==="account"?'<span class="pill ok">Cuenta</span> Tu progreso se guarda automáticamente en la base de datos privada de esta app, asociada a tu cuenta de Claude. Solo tú puedes verlo. Además queda una copia en este navegador.':
+    '<span class="pill ok">Este computador</span> Tu progreso se guarda automáticamente dentro de la app, en este computador. Exporta un respaldo de vez en cuando: te sirve para pasarlo a otro equipo o si borras los datos del navegador.')+
+   '</p><p class="small muted" style="margin-top:8px">Última actualización: '+new Date(S.updatedAt).toLocaleString("es-CL")+'</p></div>'+
+   '<div class="card"><h3>Respaldo (JSON)</h3><p class="small muted" style="margin:8px 0 12px">Descarga todo tu progreso o restáuralo desde un archivo.</p><div class="row"><button class="btn pri" id="exp">Exportar progreso</button><button class="btn" id="imp">Importar respaldo</button></div><textarea id="expt" style="display:none;margin-top:12px;min-height:120px" readonly></textarea></div>'+
+   '<div class="card"><h3>Objetivos semanales</h3><div class="grid g2" style="margin-top:10px"><label class="small">Minutos por semana<input type="number" id="gm" min="10" max="2000" value="'+S.prefs.goalMin+'"></label><label class="small">Lecciones por semana<input type="number" id="gl" min="1" max="30" value="'+S.prefs.goalLessons+'"></label></div><div class="row" style="margin-top:10px"><button class="btn" id="sg">Guardar objetivos</button></div></div>'+
+   '<div class="card"><h3>Audio</h3>'+(tts?'<div class="grid g2" style="margin-top:10px"><label class="small">Voz<select id="vv">'+EC.voiceOptions(S.prefs.voice)+'</select></label><label class="small">Velocidad<select id="vr">'+[0.8,0.9,1,1.1,1.2].map(v=>'<option value="'+v+'" '+(S.prefs.rate==v?"selected":"")+'>'+v+'×</option>').join("")+'</select></label></div><div class="row" style="margin-top:10px"><button class="btn" id="tv">'+ICON.speaker+' Probar</button></div>':'<p class="small muted" style="margin-top:8px">El audio no está disponible en este navegador o app.</p>')+'</div>'+
+   '<div class="card"><h3>Probar micrófono</h3>'+(dict?'<p class="small muted" style="margin:8px 0 10px">Pulsa «Hablar», di una frase en inglés y pulsa «Detener». Si aparece el texto, el reconocimiento de voz funciona.</p><textarea id="mt" style="min-height:70px" placeholder="Aquí aparecerá lo que digas…"></textarea><div class="row" style="margin-top:10px"><button class="btn" id="mtb">'+ICON.mic+' Hablar</button></div>':micNote())+'</div>'+
+   '<div class="card"><h3>Capacidades disponibles en esta vista</h3><ul class="small" style="margin:8px 0 0;padding-left:18px;display:grid;gap:4px">'+
+    cap("Guardado en este computador",true)+cap("Corrección y lecciones con IA (Gemini)",!!sample)+cap("Audio en inglés (listening)",!!tts)+cap("Reconocimiento de voz (speaking y respuestas habladas)",!!dict)+cap("Descarga de archivos",!!dls)+'</ul></div>'+
+   '<div class="card"><h3>Reiniciar</h3><p class="small muted" style="margin:8px 0 12px">Puedes repetir el diagnóstico (se conserva tu historial) o borrar todo.</p><div class="row"><button class="btn" id="rd">Repetir diagnóstico</button><button class="btn" id="rs" style="color:var(--bad)">Borrar todo</button></div></div></div>';
+  EC.wireKeyCard(m,()=>{sample=EC.makeSample();vSettings(m);});
+  $("#exp").onclick=async()=>{const data=JSON.stringify(S,null,1),fn="english-coach-progreso-"+today()+".json";
+    if(dls){try{await dls.save({filename:fn,data});toast("Respaldo descargado");return;}catch(e){}}
+    const t=$("#expt");t.style.display="block";t.value=data;t.select();toast("Copia este texto y guárdalo como archivo .json");};
+  $("#imp").onclick=()=>$("#importFile").click();
+  if($("#mtb")) $("#mtb").onclick=()=>startDictation($("#mt"),$("#mtb"));
+  $("#sg").onclick=()=>{S.prefs.goalMin=clamp(+$("#gm").value||150,10,2000);S.prefs.goalLessons=clamp(+$("#gl").value||3,1,30);save();toast("Objetivos guardados");};
+  if($("#vv")){$("#vv").onchange=e=>{S.prefs.voice=e.target.value;save();};$("#vr").onchange=e=>{S.prefs.rate=+e.target.value;save();};$("#tv").onclick=()=>speak("Hi! This is how your listening exercises will sound.").catch(()=>toast("No se pudo reproducir"));}
+  $("#rd").onclick=()=>{ if(!$("#rd").dataset.c){$("#rd").dataset.c=1;$("#rd").textContent="Pulsa otra vez para confirmar";return;}
+    S.diag={status:"none",step:"intro",previous:S.diag.result||null};save();go("diagnostic");};
+  $("#rs").onclick=()=>{ if(!$("#rs").dataset.c){$("#rs").dataset.c=1;$("#rs").textContent="Pulsa otra vez: se borra TODO";return;}
+    S=blankState();save();flush();go("dashboard");};
+}
+function cap(t,ok){return '<li>'+(ok?'<span style="color:var(--ok)">✓</span> ':'<span style="color:var(--bad)">✗</span> ')+t+'</li>';}
+$("#importFile").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!o.diag||!o.prefs)throw 0;S=migrate(o);S.updatedAt=nowISO();save();flush();toast("Progreso restaurado");go("dashboard");}catch(_){toast("El archivo no es un respaldo válido de English Coach");}};r.readAsText(f);e.target.value="";};
+
+/* ============================================================
+   ARRANQUE
+   ============================================================ */
+async function boot(){
+  const local=loadLocal(); if(local) S=migrate(local);
+  render();
+  sample=EC.makeSample(); tts=EC.makeTTS(); dict=EC.makeDict(); dls=EC.makeDls();
+  wireDictation(); persistMode="local"; setSaveStatus("ok","Progreso guardado en este computador");
+  render(); EC.afterBoot(); return;
+  db=await use("db"); userCap=await use("user");
+  if(db&&userCap){ try{me=await userCap.id();}catch(e){me=null;} }
+  if(db&&me){
+    setSaveStatus("warn","Cargando tu progreso…");
+    const timer=setTimeout(()=>setSaveStatus("warn","No se pudo contactar la base de datos aún…"),10000);
+    try{
+      const snap=await db.doc("data/users/"+me+"/state").get(); clearTimeout(timer);
+      persistMode="account";
+      if(snap.exists){ const remote=migrate(snap.data()?JSON.parse(JSON.stringify(snap.data())):null);
+        if(!local||!local.updatedAt||remote.updatedAt>=local.updatedAt){S=remote;lastSaved=JSON.stringify(S);saveLocal(lastSaved);setSaveStatus("ok","Progreso guardado en tu cuenta");}
+        else { save(); }
+      } else { if(local) save(); else setSaveStatus("ok","Listo para guardar en tu cuenta"); }
+    }catch(e){clearTimeout(timer);persistMode="local";setSaveStatus("warn","Base de datos no disponible: guardado local");}
+  } else { persistMode="local"; setSaveStatus("warn","Guardado solo en este navegador"); }
+  render();
+}
+boot();
+})();
+</script>
+</body>
+</html>
