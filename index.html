@@ -862,6 +862,31 @@ async function generateLesson(x){
   "\"vocab\":[{\"term\":\"...\",\"meaning_es\":\"...\",\"example\":\"...\"}] (4-6 useful words/expressions),"+
   "\"next_tip_es\":\"one sentence\"}. Vary the correct answer index across mc items.","default");
 }
+/* Generación de lecciones: un solo pedido por lección, y la siguiente se prepara por adelantado */
+const lessonJobs={};
+const PREFETCH_DAYS=5;
+function lessonJob(x){
+  const id=x.l.id, pf=S.prefetch&&S.prefetch[id];
+  if(pf&&pf.content&&(Date.now()-new Date(pf.at).getTime())<PREFETCH_DAYS*864e5) return Promise.resolve(pf.content);
+  if(!lessonJobs[id]) lessonJobs[id]=generateLesson(x).then(c=>{delete lessonJobs[id];return c;},e=>{delete lessonJobs[id];throw e;});
+  return lessonJobs[id];
+}
+function prefetchAfter(x){
+  if(!sample||!S.course) return;
+  const ls=allLessons(), i=ls.findIndex(z=>z.l.id===x.l.id), n=ls[i+1];
+  if(!n||n.l.status==="done") return;
+  S.prefetch=S.prefetch||{};
+  if(S.prefetch[n.l.id]||lessonJobs[n.l.id]) return;
+  setTimeout(()=>{ lessonJob(n).then(c=>{S.prefetch=S.prefetch||{};S.prefetch[n.l.id]={content:c,at:nowISO()};save();}).catch(()=>{}); },3000);
+}
+function prefetchNext(){
+  if(!sample||!S.course||S.diag.status!=="done") return;
+  const n=nextLesson(); if(!n) return;
+  if(S.current&&S.current.lessonId===n.l.id&&S.current.content) return prefetchAfter(n);
+  S.prefetch=S.prefetch||{};
+  if(S.prefetch[n.l.id]||lessonJobs[n.l.id]) return;
+  lessonJob(n).then(c=>{S.prefetch=S.prefetch||{};S.prefetch[n.l.id]={content:c,at:nowISO()};save();}).catch(()=>{});
+}
 function vLesson(m){
   if(S.diag.status!=="done"){m.innerHTML=header("Interactive Lessons","")+'<div class="card empty">Completa primero el diagnóstico.<div style="margin-top:12px"><button class="btn pri" id="d">Ir al diagnóstico</button></div></div>';$("#d").onclick=()=>go("diagnostic");return;}
   if(!S.current||!S.current.lessonId){
@@ -876,9 +901,10 @@ function vLesson(m){
   $("#ex").onclick=()=>go("path");
   const c=$("#lc");
   if(cur.step==="loading"||!cur.content){
-    c.innerHTML='<div class="empty"><span class="spin"></span> Preparando la lección adaptada a tu nivel…</div>';
+    c.innerHTML='<div class="empty"><span class="spin"></span> Preparando la lección adaptada a tu nivel…<div class="small muted" id="lprog" style="margin-top:10px">Conectando con la IA…</div><div style="height:6px;background:var(--line);border-radius:6px;margin:10px auto 0;max-width:320px;overflow:hidden"><div id="lbar" style="height:100%;width:3%;background:var(--brand);transition:width .3s"></div></div></div>';
+    EC.onProgress(n=>{const p=$("#lprog"),b=$("#lbar");if(!p||!b)return;const pct=Math.min(97,Math.round(n/(x.l.skill==="listening"?7000:6000)*100));p.textContent="La IA está escribiendo tu lección… "+pct+"%";b.style.width=Math.max(3,pct)+"%";});
     if(!sample){c.innerHTML='<div class="empty">Las lecciones se generan con IA y no está disponible en esta vista. Agrega tu clave de Gemini en Ajustes.</div>';return;}
-    generateLesson(x).then(content=>{ if(!S.current||S.current.lessonId!==x.l.id)return; S.current.content=content;S.current.step="learn";x.l.attempts=(x.l.attempts||0)+1;(content.vocab||[]).forEach(v=>addCard(v.term,v.meaning_es,v.example,x.l.title));save();render();})
+    lessonJob(x).then(content=>{ if(!S.current||S.current.lessonId!==x.l.id)return; if(S.prefetch)delete S.prefetch[x.l.id]; prefetchAfter(x); S.current.content=content;S.current.step="learn";x.l.attempts=(x.l.attempts||0)+1;(content.vocab||[]).forEach(v=>addCard(v.term,v.meaning_es,v.example,x.l.title));save();render();})
       .catch(e=>{c.innerHTML='<div class="empty"><p>'+esc(e.message||"Error")+'</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn pri" id="rt">Reintentar</button></div></div>';$("#rt").onclick=()=>{render();};});
     return;
   }
@@ -1152,7 +1178,7 @@ function vSettings(m){
    '<div class="card"><h3>Capacidades disponibles en esta vista</h3><ul class="small" style="margin:8px 0 0;padding-left:18px;display:grid;gap:4px">'+
     cap("Guardado en este computador",true)+cap("Corrección y lecciones con IA (Gemini)",!!sample)+cap("Audio en inglés (listening)",!!tts)+cap("Reconocimiento de voz (speaking y respuestas habladas)",!!dict)+cap("Descarga de archivos",!!dls)+'</ul></div>'+
    '<div class="card"><h3>Reiniciar</h3><p class="small muted" style="margin:8px 0 12px">Puedes repetir el diagnóstico (se conserva tu historial) o borrar todo.</p><div class="row"><button class="btn" id="rd">Repetir diagnóstico</button><button class="btn" id="rs" style="color:var(--bad)">Borrar todo</button></div></div></div>';
-  EC.wireKeyCard(m,()=>{sample=EC.makeSample();vSettings(m);});
+  EC.wireKeyCard(m,()=>{sample=EC.makeSample();vSettings(m);setTimeout(prefetchNext,1500);});
   $("#exp").onclick=async()=>{const data=JSON.stringify(S,null,1),fn="english-coach-progreso-"+today()+".json";
     if(dls){try{await dls.save({filename:fn,data});toast("Respaldo descargado");return;}catch(e){}}
     const t=$("#expt");t.style.display="block";t.value=data;t.select();toast("Copia este texto y guárdalo como archivo .json");};
@@ -1176,7 +1202,7 @@ async function boot(){
   render();
   sample=EC.makeSample(); tts=EC.makeTTS(); dict=EC.makeDict(); dls=EC.makeDls();
   wireDictation(); persistMode="local"; setSaveStatus("ok","Progreso guardado en este computador");
-  render(); EC.afterBoot(); return;
+  render(); EC.afterBoot(); setTimeout(prefetchNext,2500); return;
   db=await use("db"); userCap=await use("user");
   if(db&&userCap){ try{me=await userCap.id();}catch(e){me=null;} }
   if(db&&me){

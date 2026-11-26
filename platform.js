@@ -48,25 +48,56 @@ async function apiError(r){
   return {code:"error",status:r.status,message:"Gemini respondió con un error ("+r.status+"). "+msg.slice(0,160)};
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+/* Velocidad: desactiva el "razonamiento" previo del modelo (lo que más demora)
+   y recibe la respuesta en vivo (streaming) para mostrar el avance. */
+function thinkingOptions(model){
+  const v=(model.match(/gemini-(\d+)/)||[])[1];
+  if(v&&+v<=2) return [{thinkingBudget:0},null];
+  return [{thinkingLevel:"minimal"},{thinkingLevel:"low"},{thinkingBudget:0},null];
+}
+function thinkIdx(model){try{return +(localStorage.getItem("ec-think:"+model)||0);}catch(e){return 0;}}
+function setThinkIdx(model,i){try{localStorage.setItem("ec-think:"+model,String(i));}catch(e){}}
+
+let progressHook=null;
+function reportProgress(chars){ try{ progressHook&&progressHook(chars); }catch(e){} }
+
+async function readStream(r){
+  const reader=r.body.getReader(), dec=new TextDecoder();
+  let buf="", text="", block=null;
+  for(;;){
+    const {done,value}=await reader.read(); if(done) break;
+    buf+=dec.decode(value,{stream:true});
+    let i;
+    while((i=buf.indexOf("\n"))>=0){
+      const line=buf.slice(0,i).trim(); buf=buf.slice(i+1);
+      if(!line.startsWith("data:")) continue;
+      let d; try{d=JSON.parse(line.slice(5));}catch(e){continue;}
+      if(d.promptFeedback&&d.promptFeedback.blockReason) block=d.promptFeedback.blockReason;
+      const c=(d.candidates||[])[0];
+      const parts=(c&&c.content&&c.content.parts)||[];
+      parts.forEach(p=>{ if(!p.thought&&typeof p.text==="string") text+=p.text; });
+      reportProgress(text.length);
+    }
+  }
+  if(!text) throw {code:block?"blocked":"empty",message:block?"Gemini no respondió ("+block+"). Intenta de nuevo.":"Gemini devolvió una respuesta vacía. Intenta de nuevo."};
+  return text;
+}
+
 async function generate(contents,json){
   const key=getKey(); if(!key) throw {code:"no_sample",message:"Configura tu clave gratuita de Gemini en Ajustes para usar la IA."};
   if(!navigator.onLine) throw {code:"offline",message:"Sin conexión a internet: la IA necesita conexión."};
-  const body={contents,generationConfig:{temperature:0.7,maxOutputTokens:16384}};
-  if(json) body.generationConfig.responseMimeType="application/json";
   let model=await getModel(key), lastErr=null;
-  for(let attempt=0;attempt<3;attempt++){
+  for(let attempt=0;attempt<6;attempt++){
+    const opts=thinkingOptions(model), ti=Math.min(thinkIdx(model),opts.length-1);
+    const body={contents,generationConfig:{temperature:0.7,maxOutputTokens:8192}};
+    if(json) body.generationConfig.responseMimeType="application/json";
+    if(opts[ti]) body.generationConfig.thinkingConfig=opts[ti];
     let r;
-    try{ r=await fetch(API+"/"+model+":generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify(body)}); }
+    try{ r=await fetch(API+"/"+model+":streamGenerateContent?alt=sse",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},body:JSON.stringify(body)}); }
     catch(e){ lastErr={code:"network",message:"No se pudo conectar con Gemini. Revisa tu conexión."}; await sleep(1200); continue; }
-    if(r.ok){
-      const d=await r.json();
-      const c=(d.candidates||[])[0];
-      if(!c){ const why=d.promptFeedback&&d.promptFeedback.blockReason; throw {code:"blocked",message:"Gemini no respondió"+(why?" ("+why+")":"")+". Intenta de nuevo."}; }
-      const text=((c.content&&c.content.parts)||[]).filter(p=>!p.thought&&typeof p.text==="string").map(p=>p.text).join("");
-      if(!text) throw {code:"empty",message:"Gemini devolvió una respuesta vacía. Intenta de nuevo."};
-      return text;
-    }
+    if(r.ok) return await readStream(r);
     lastErr=await apiError(r);
+    if(r.status===400&&/think|budget|level/i.test(lastErr.message)&&ti<opts.length-1){ setThinkIdx(model,ti+1); continue; }
     if(lastErr.code==="no_model"&&attempt===0){ model=await getModel(key,true); continue; }
     if(r.status>=500){ await sleep(1500*(attempt+1)); continue; }
     throw lastErr;
@@ -272,5 +303,5 @@ function installButton(){
 addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); installEvt=e; installButton(); });
 addEventListener("appinstalled",()=>{ installEvt=null; installButton(); });
 
-window.EC={makeSample,makeTTS,makeDict,makeDls,voiceOptions,keyCard,wireKeyCard,afterBoot,hasKey:()=>!!getKey()};
+window.EC={onProgress:f=>{progressHook=f;},makeSample,makeTTS,makeDict,makeDls,voiceOptions,keyCard,wireKeyCard,afterBoot,hasKey:()=>!!getKey()};
 })();
