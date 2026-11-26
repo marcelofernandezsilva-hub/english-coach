@@ -256,5 +256,21 @@ if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
   addEventListener("load",()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
 }
 
+/* ---------------- Botón «Instalar app» ---------------- */
+let installEvt=null;
+function installButton(){
+  let b=document.getElementById("ec-install");
+  if(!installEvt||matchMedia("(display-mode: standalone)").matches){ if(b) b.remove(); return; }
+  if(b) return;
+  b=document.createElement("button");
+  b.id="ec-install"; b.className="btn pri"; b.textContent="⬇ Instalar app";
+  b.style.cssText="position:fixed;right:18px;bottom:max(18px, calc(env(safe-area-inset-bottom) + 18px));z-index:50;box-shadow:0 6px 20px rgba(20,26,46,.25)";
+  b.onclick=async()=>{ const e=installEvt; if(!e) return; installEvt=null; b.remove();
+    try{ await e.prompt(); const c=await e.userChoice; if(c&&c.outcome==="accepted") toastLite("English Coach se instaló en tu computador."); }catch(err){} };
+  document.body.appendChild(b);
+}
+addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); installEvt=e; installButton(); });
+addEventListener("appinstalled",()=>{ installEvt=null; installButton(); });
+
 window.EC={makeSample,makeTTS,makeDict,makeDls,voiceOptions,keyCard,wireKeyCard,afterBoot,hasKey:()=>!!getKey()};
 })();
